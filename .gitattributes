@@ -1,0 +1,20 @@
+# Set default behavior to automatically guess line endings
+* text=auto
+
+# Force LF for shell scripts and specific source files
+*.sh text eol=lf
+*.py text eol=lf
+*.js text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.json text eol=lf
+
+# Force CRLF for PowerShell scripts (native to Windows)
+*.ps1 text eol=crlf
+
+# Denote binary files (don't touch line endings)
+*.jpeg binary
+*.jpg binary
+*.png binary
+*.sqlite binary
+*.db binary
