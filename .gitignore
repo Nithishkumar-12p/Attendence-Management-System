@@ -1,0 +1,96 @@
+# ============================================================
+#  Attendance Management System — .gitignore
+# ============================================================
+
+# ──────────────────────────────────────────
+# Python / Backend
+# ──────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# Virtual environments
+backend/venv/
+backend/.venv/
+venv/
+.venv/
+env/
+.env/
+
+# Python egg / dist
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ──────────────────────────────────────────
+# Environment & Secrets
+# ──────────────────────────────────────────
+.env
+.env.*
+*.env
+secrets.json
+config.local.*
+
+# ──────────────────────────────────────────
+# Database files
+# ──────────────────────────────────────────
+*.db
+*.sqlite
+*.sqlite3
+
+# ──────────────────────────────────────────
+# Node / Frontend
+# ──────────────────────────────────────────
+node_modules/
+frontend/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Build output
+frontend/dist/
+frontend/build/
+
+# ──────────────────────────────────────────
+# Logs
+# ──────────────────────────────────────────
+logs/
+*.log
+*.log.*
+
+# ──────────────────────────────────────────
+# OS / Editor
+# ──────────────────────────────────────────
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+
+# ──────────────────────────────────────────
+# Miscellaneous
+# ──────────────────────────────────────────
+*.bak
+*.tmp
+*.swp
+*.orig
+*.cache
