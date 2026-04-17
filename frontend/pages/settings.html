@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Industrial Attendance</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/settings.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="app-container">
+
+    <!-- Sidebar -->
+    <div class="sidebar glass-panel">
+        <div style="text-align:center; padding:0.5rem 1rem 1rem 1rem;">
+            <img src="../assets/logo.png" alt="Vidvat Solutions Logo" style="max-width:100%;height:auto;max-height:65px;object-fit:contain;border-radius:12px;margin-bottom:0.5rem;display:block;margin-left:auto;margin-right:auto;">
+            <h2 id="sidebarCompanyName" style="color:var(--text-main);font-family:'Segoe UI',system-ui,sans-serif;font-size:1.15rem;font-weight:800;letter-spacing:0.02em;margin:0;">VIDVAT SOLUTIONS</h2>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item" onclick="location.href='dashboard.html'"><i class="fa-solid fa-gauge-high"></i> Dashboard</li>
+            <li class="nav-item" onclick="location.href='attendance.html'"><i class="fa-solid fa-calendar-check"></i> Mark Attendance</li>
+            <li class="nav-item" onclick="location.href='employees.html'"><i class="fa-solid fa-users"></i> Contract Labours</li>
+            <li class="nav-item" onclick="location.href='salary.html'"><i class="fa-solid fa-wallet"></i> Salary</li>
+            <li class="nav-item" onclick="location.href='reports.html'"><i class="fa-solid fa-file-lines"></i> Reports</li>
+            <li class="nav-item active" onclick="location.href='settings.html'"><i class="fa-solid fa-gear"></i> Settings</li>
+            <li class="nav-item" onclick="location.href='login.html'" style="margin-top:auto;color:var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> Logout</li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Header -->
+        <div class="settings-header">
+            <div>
+                <h1 class="settings-title"><i class="fa-solid fa-gear"></i> System Settings</h1>
+                <p class="settings-subtitle">Configure working hours, shift times, and company defaults</p>
+            </div>
+            <div style="display:flex;gap:0.75rem;align-items:center;">
+                <button class="btn-reset" id="resetBtn"><i class="fa-solid fa-rotate-left"></i> Reset Defaults</button>
+                <button class="btn-save" id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> Save Settings</button>
+            </div>
+        </div>
+
+        <!-- Live Preview Strip -->
+        <div class="preview-strip">
+            <div class="preview-chip">
+                <span class="preview-chip-label">Avg. Shift</span>
+                <span class="preview-chip-value" id="prev_shift">—</span>
+            </div>
+            <div class="preview-chip">
+                <span class="preview-chip-label">Total Shifts</span>
+                <span class="preview-chip-value" id="prev_total_shifts">0</span>
+            </div>
+            <div class="preview-chip">
+                <span class="preview-chip-label">Grace Period</span>
+                <span class="preview-chip-value" id="prev_grace">—</span>
+            </div>
+        </div>
+
+
+        <!-- ── Section: Shift Management ── -->
+        <div class="settings-section">
+            <div class="section-header">
+                <div style="display:flex; align-items:center; gap:1rem;">
+                    <div class="section-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <div>
+                        <h3 class="section-title">Shift Management</h3>
+                        <p class="section-desc">Manage work shifts and assign contract members to them</p>
+                    </div>
+                </div>
+                <button class="btn-save" style="background:var(--accent); color:white;" onclick="showShiftModal()">
+                    <i class="fa-solid fa-plus"></i> Add New Shift
+                </button>
+            </div>
+            
+            <div class="section-body">
+                <div class="shifts-grid" id="shiftsGrid">
+                    <!-- Populated by JS -->
+                    <div style="text-align:center; padding:3rem; color:var(--text-dim); width:100%;">
+                        <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+                        <p>Loading shifts...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /main-content -->
+</div><!-- /app-container -->
+
+<!-- Modal: Add/Edit Shift -->
+<div id="shiftModal" class="modal">
+    <div class="glass-panel modal-content shift-modal-content">
+        <div class="modal-header">
+            <h2 id="shiftModalTitle">Add New Shift</h2>
+            <button class="btn-close" onclick="hideShiftModal()">&times;</button>
+        </div>
+        <form id="shiftForm" class="modal-body">
+            <input type="hidden" id="shift_id">
+            
+            <div class="form-row">
+                <div class="field-group full-width">
+                    <label class="field-label">Shift Name</label>
+                    <input type="text" id="shift_name" placeholder="e.g. 1st Shift, Night Shift" required>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="field-group">
+                    <label class="field-label"><i class="fa-regular fa-clock"></i> Start Time</label>
+                    <input type="time" id="s_start_time" required>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="fa-regular fa-clock"></i> End Time</label>
+                    <input type="time" id="s_end_time" required>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="fa-solid fa-hourglass-half"></i> Working Hours</label>
+                    <input type="number" id="s_working_hours" step="0.1" value="8.0" required>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="fa-solid fa-stopwatch"></i> Grace Period (min)</label>
+                    <input type="number" id="s_grace_period" value="15" required>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-reset" onclick="hideShiftModal()">Cancel</button>
+                <button type="submit" class="btn-save">Save Shift Details</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Manage Members -->
+<div id="membersModal" class="modal">
+    <div class="glass-panel modal-content members-modal-content">
+        <div class="modal-header">
+            <div class="header-content">
+                <h2>Assign Members</h2>
+                <p id="memberShiftName" class="modal-subtitle">Shift Name</p>
+            </div>
+            <button class="btn-close" onclick="hideMembersModal()">&times;</button>
+        </div>
+        
+        <div class="modal-body custom-scroll">
+            <div class="search-bar-container">
+                <div class="search-input-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="memberSearch" placeholder="Search by name..." autocomplete="off">
+                    <button type="button" class="btn-clear-search" id="clearMemberSearch" title="Clear search" style="display:none;">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <button type="button" class="btn-search-trigger" id="memberSearchBtn">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search
+                </button>
+            </div>
+            <div id="resultsCount" class="results-count">Showing all members</div>
+
+            <div id="membersList" class="members-explorer">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn-reset" onclick="hideMembersModal()" style="border:none;">Cancel</button>
+            <button type="button" class="btn-save" id="saveAssignmentBtn">Confirm Assignment</button>
+        </div>
+    </div>
+</div>
+
+    </div><!-- /main-content -->
+</div><!-- /app-container -->
+
+<!-- Toast -->
+<div class="toast" id="toast">
+    <i class="toast-icon fa-solid fa-circle-check" id="toastIcon"></i>
+    <span id="toastText">Settings saved successfully!</span>
+</div>
+
+<script src="../js/settings.js"></script>
+</body>
+</html>

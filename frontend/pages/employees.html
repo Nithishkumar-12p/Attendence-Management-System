@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Labours - Industrial Attendance</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/employees.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar glass-panel">
+            <div style="text-align: center; padding: 0.5rem 1rem 1rem 1rem;">
+                <img src="../assets/logo.png" alt="Vidvat Solutions Logo" style="max-width: 100%; height: auto; max-height: 65px; object-fit: contain; border-radius: 12px; margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto;">
+                <h2 style="color: var(--text-main); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 0.02em; margin: 0;">VIDVAT SOLUTIONS</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item" onclick="location.href='dashboard.html'"><i class="fa-solid fa-gauge-high"></i> Dashboard</li>
+                <li class="nav-item" onclick="location.href='attendance.html'"><i class="fa-solid fa-calendar-check"></i> Mark Attendance</li>
+                <li class="nav-item active" onclick="location.href='employees.html'"><i class="fa-solid fa-users"></i> Contract Labours</li>
+                <li class="nav-item" onclick="location.href='salary.html'"><i class="fa-solid fa-wallet"></i> Salary</li>
+                <li class="nav-item" onclick="location.href='reports.html'"><i class="fa-solid fa-file-lines"></i> Reports</li>
+                <li class="nav-item" onclick="location.href='settings.html'"><i class="fa-solid fa-gear"></i> Settings</li>
+                <li class="nav-item" onclick="location.href='login.html'" style="margin-top: auto; color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> Logout</li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h1>Contract Labours</h1>
+                <button class="btn btn-primary" onclick="showAddModal()">+ Register Labour</button>
+            </header>
+
+            <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem;">
+                <input type="text" id="labourSearch" placeholder="Search by name or ID..." style="flex: 1; max-width: 400px; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--glass-border);">
+            </div>
+
+            <div class="glass-panel" style="padding: 0; overflow: hidden;">
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Daily Wage</th>
+                                <th>Status</th>
+                                <th style="text-align: right; padding-right: 2rem;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeeListBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Adding Employee -->
+    <div id="addEmpModal" class="modal">
+        <div class="glass-panel modal-content">
+            <h2 id="modalTitle" style="margin-bottom: 1.5rem;">Register New Labour</h2>
+            <form id="addEmpForm">
+                <div style="margin-bottom: 2rem; display: flex; gap: 2rem;">
+                    <div style="flex: 2;">
+                        <label style="display: block; margin-bottom:0.3rem; color: var(--text-dim);">Full Name</label>
+                        <input type="text" id="empName" placeholder="Full Name" required style="width: 100%;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display: block; margin-bottom:0.3rem; color: var(--text-dim);">Type of Work</label>
+                        <input type="text" id="empDesignation" placeholder="e.g. Mason, Helper" required style="width: 100%;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display: block; margin-bottom:0.3rem; color: var(--text-dim);">Daily Wage</label>
+                        <input type="number" id="empSalary" value="500" required style="width: 100%;">
+                    </div>
+                </div>
+<br>
+                <div style="margin-bottom: 2rem; display: flex; gap: 2rem;">
+                    <div style="flex: 1;">
+                        <label style="display: block; margin-bottom: 0.3rem; color: var(--text-dim);">Aadhar Number</label>
+                        <input type="text" id="empAadhar" pattern="\d{12}" placeholder="12 Digit Aadhar" required style="width: 100%;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display: block; margin-bottom: 0.3rem; color: var(--text-dim);">Phone Number</label>
+                        <input type="text" id="empPhone" placeholder="Phone Number" style="width: 100%;">
+                    </div>
+                </div>
+<br>
+                <div style="margin-bottom: 2rem; display: flex; gap: 2rem;">
+                    <div style="flex: 1;">
+                        <label style="display: block; margin-bottom: 0.3rem; color: var(--text-dim);">Contract Start</label>
+                        <input type="date" id="empContractStart" required style="width: 100%;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display: block; margin-bottom: 0.3rem; color: var(--text-dim);">Contract End</label>
+                        <input type="date" id="empContractEnd" required style="width: 100%;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display: block; margin-bottom: 0.3rem; color: var(--text-dim);">Hours / Day</label>
+                        <input type="number" id="empHours" value="8" required style="width: 100%;">
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; display: flex; justify-content: flex-end; gap: 1rem;">
+                    <button type="button" class="btn" style="background: transparent; color: var(--text-dim);" onclick="hideAddModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Labour</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/employees.js"></script>
+</body>
+</html>

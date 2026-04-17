@@ -1,0 +1,76 @@
+        .salary-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .btn-export-pdf {
+            background: #15803d;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-export-pdf:hover {
+            background: #16a34a;
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+        }
+
+        .action-btn {
+            background: rgba(14, 165, 233, 0.1);
+            color: #0ea5e9;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #0ea5e9;
+            color: white;
+            box-shadow: 0 2px 8px rgba(14, 165, 233, 0.4);
+        }
+
+        #salarySearch:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+            outline: none;
+        }
+
+        #clearSalarySearch:hover {
+            color: var(--danger) !important;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--primary);
+        }
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        tfoot tr {
+            background: #f0f4f8;
+            font-weight: bold;
+        }

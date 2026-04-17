@@ -1,0 +1,128 @@
+        .attendance-main {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            padding: 1rem 1.5rem !important; /* Significantly reduced padding for more space */
+        }
+
+        .attendance-sticky-header {
+            flex-shrink: 0;
+            background: var(--bg-dark);
+            z-index: 100;
+            padding-bottom: 0.5rem;
+        }
+
+        .attendance-table-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+            padding-bottom: 1rem;
+            padding-right: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Thinner, cleaner scrollbar */
+        .attendance-table-wrapper::-webkit-scrollbar {
+            width: 8px;
+        }
+        .attendance-table-wrapper::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .attendance-table-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .attendance-table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Styling for the search container within the sticky area */
+        .search-container {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .attendance-row:hover { background: rgba(14, 165, 233, 0.05); }
+        
+        /* Compact column sizing */
+        .time-input { width: 85px; padding: 0.3rem 0.4rem; font-size: 0.85rem; }
+        input[type="number"].time-input { width: 65px; } /* Tools count */
+        
+        .status-select { 
+            width: 100%; 
+            min-width: 135px; /* Compact but readable */
+            padding: 0.4rem 0.5rem;
+            font-weight: 700;
+            border-radius: 6px;
+            border: 1.5px solid transparent;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+
+        /* High-density table adjustments */
+        #attendanceTable th, #attendanceTable td {
+            padding: 0.8rem 0.6rem !important; /* Tighter padding */
+            font-size: 0.85rem;
+        }
+        
+        /* Specific column widths */
+        th:nth-child(1), td:nth-child(1) { width: 70px; }  /* Emp ID */
+        th:nth-child(3), td:nth-child(3), 
+        th:nth-child(4), td:nth-child(4) { width: 100px; } /* In/Out Time */
+        th:nth-child(5), td:nth-child(5) { width: 80px; }  /* No. of Tools */
+        th:nth-last-child(1), td:nth-last-child(1) { width: 160px; } /* Status */
+        
+        /* Color-coded Status */
+        .status-select.status-P {
+            background: rgba(16, 185, 129, 0.12);
+            color: #059669;
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+        .status-select.status-A {
+            background: rgba(239, 68, 68, 0.12);
+            color: #dc2626;
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+        .status-select.status-CL {
+            background: rgba(245, 158, 11, 0.12);
+            color: #d97706;
+            border-color: rgba(245, 158, 11, 0.4);
+        }
+        .status-select.status-SL {
+            background: rgba(139, 92, 246, 0.12);
+            color: #7c3aed;
+            border-color: rgba(139, 92, 246, 0.4);
+        }
+        .status-select.status-HD {
+            background: rgba(14, 165, 233, 0.12);
+            color: #0284c7;
+            border-color: rgba(14, 165, 233, 0.4);
+        }
+        .status-select:focus { outline: none; }
+        
+        /* Sticky Table Header */
+        #attendanceTable thead th {
+            position: sticky;
+            top: 0;
+            background: #ffffff;
+            z-index: 5;
+            box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .toast-save {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+            z-index: 9999;
+            font-weight: 600;
+        }

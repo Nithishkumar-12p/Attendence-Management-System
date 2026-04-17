@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Industrial Attendance</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar glass-panel">
+            <div style="text-align: center; padding: 0.5rem 1rem 1rem 1rem;">
+                <img src="../assets/logo.png" alt="Vidvat Solutions Logo" style="max-width: 100%; height: auto; max-height: 65px; object-fit: contain; border-radius: 12px; margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto;">
+                <h2 style="color: var(--text-main); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 0.02em; margin: 0;">VIDVAT SOLUTIONS</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item active" onclick="location.href='dashboard.html'"><i class="fa-solid fa-gauge-high"></i> Dashboard</li>
+                <li class="nav-item" onclick="location.href='attendance.html'"><i class="fa-solid fa-calendar-check"></i> Mark Attendance</li>
+                <li class="nav-item" onclick="location.href='employees.html'"><i class="fa-solid fa-users"></i> Contract Labours</li>
+                <li class="nav-item" onclick="location.href='salary.html'"><i class="fa-solid fa-wallet"></i> Salary</li>
+                <li class="nav-item" onclick="location.href='reports.html'"><i class="fa-solid fa-file-lines"></i> Reports</li>
+                <li class="nav-item" onclick="location.href='settings.html'"><i class="fa-solid fa-gear"></i> Settings</li>
+                <li class="nav-item" onclick="location.href='login.html'" style="margin-top: auto; color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> Logout</li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h1>System Overview</h1>
+                <div id="currentTime" style="color: var(--text-dim); font-family: monospace;"></div>
+            </header>
+
+            <div class="dashboard-stats">
+                <div class="glass-panel stat-card">
+                    <p style="color: var(--text-dim); margin-bottom: 0.5rem;">Total Employees</p>
+                    <h2 id="totalEmpCount" style="font-size: 2.5rem; margin-bottom: 0;">-</h2>
+                </div>
+                <div class="glass-panel stat-card">
+                    <p style="color: var(--text-dim); margin-bottom: 0.5rem;">Today's Attendance</p>
+                    <h2 id="todayPresentPercent" style="font-size: 2.5rem; margin-bottom: 0; color: var(--success);">-</h2>
+                </div>
+                <div class="glass-panel stat-card">
+                    <p style="color: var(--text-dim); margin-bottom: 0.5rem;">Late Marks</p>
+                    <h2 id="todayLateCount" style="font-size: 2.5rem; margin-bottom: 0; color: var(--accent);">-</h2>
+                </div>
+            </div>
+
+            <div class="glass-panel attendance-log-container">
+                <h2>Recent Attendance Log</h2>
+                <div class="data-table-container">
+                    <table id="recentLogTable">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>In Time</th>
+                                <th>Out Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

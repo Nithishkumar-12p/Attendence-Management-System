@@ -1,0 +1,220 @@
+        /* ── Reports-specific overrides ── */
+        .reports-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--glass-border);
+        }
+
+        .reports-title {
+            font-size: 2rem;
+            font-weight: 500;
+            color: #0ea5e9; /* Light blue matching screenshot */
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Tab navigation bar */
+        .tab-bar-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .tab-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .tab-item {
+            padding: 0.5rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px; /* Pill shape */
+            background: transparent;
+        }
+
+        .tab-item:hover {
+            border-color: #0ea5e9;
+            color: #0ea5e9;
+        }
+
+        .tab-item.active {
+            background: #0284c7; /* Solid blue */
+            color: #ffffff;
+            border-color: #0284c7;
+        }
+
+        /* Date range row (right-aligned inside tab bar) */
+        .date-filter-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: auto;
+            padding: 0.4rem 1rem;
+            flex-shrink: 0;
+        }
+
+        .date-filter-row label {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .date-filter-row input[type="date"] {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.85rem;
+            width: 140px;
+            border-radius: 8px;
+        }
+
+        /* Table styling */
+        .report-table-wrap {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            background: var(--bg-card);
+        }
+
+        #reportTable th,
+        .report-table-wrap table th {
+            background: rgba(0,0,0,0.02);
+            color: var(--text-main);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        #reportTable td,
+        .report-table-wrap table td {
+            font-size: 0.85rem;
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            vertical-align: middle;
+        }
+
+        #reportTable tbody tr:hover td,
+        .report-table-wrap table tbody tr:hover td {
+            background: rgba(14, 165, 233, 0.03);
+        }
+
+        /* Status / Level badges */
+        .badge-info    { background: rgba(34,211,238,0.12); color: var(--accent);    padding: 0.2rem 0.7rem; border-radius: 6px; font-size:0.78rem; font-weight:700; }
+        .badge-error   { background: rgba(244,63,95,0.12);  color: var(--danger);    padding: 0.2rem 0.7rem; border-radius: 6px; font-size:0.78rem; font-weight:700; }
+        .badge-p       { background: rgba(16,185,129,0.12); color: var(--success);   padding: 0.2rem 0.7rem; border-radius: 6px; font-size:0.78rem; font-weight:700; }
+        .badge-a       { background: rgba(244,63,95,0.12);  color: var(--danger);    padding: 0.2rem 0.7rem; border-radius: 6px; font-size:0.78rem; font-weight:700; }
+        .badge-cl      { background: rgba(34,211,238,0.12); color: var(--accent);    padding: 0.2rem 0.7rem; border-radius: 6px; font-size:0.78rem; font-weight:700; }
+        .badge-sl      { background: rgba(167,139,250,0.12);color: #a78bfa;          padding: 0.2rem 0.7rem; border-radius: 6px; font-size:0.78rem; font-weight:700; }
+        .badge-hd      { background: rgba(245,158,11,0.12); color: var(--primary);   padding: 0.2rem 0.7rem; border-radius: 6px; font-size:0.78rem; font-weight:700; }
+
+        /* Summary stat bar */
+        .stat-strip {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-chip {
+            background: rgba(0,0,0,0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 0.7rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            min-width: 130px;
+        }
+
+        .stat-chip-label { font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+        .stat-chip-value { font-size: 1.35rem; font-weight: 700; }
+
+        /* Salary month/year row */
+        .payroll-filter {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .payroll-filter select {
+            padding: 0.55rem 0.9rem;
+            font-size: 0.9rem;
+            min-width: 130px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        /* Export buttons */
+        .btn-export-pdf  { background: #15803d; color: #fff; font-weight: 600; padding: 0.6rem 1.2rem; border-radius: 6px; }
+        .btn-dashboard   { background: #ffffff; color: #000; font-weight: 600; padding: 0.6rem 1.2rem; border-radius: 6px; }
+        .btn-export-pdf:hover { opacity: 0.9; }
+        .btn-dashboard:hover { background: #f1f5f9; }
+
+        /* Loading */
+        .loading-row td { text-align: center; color: var(--text-dim); padding: 3rem !important; }
+
+        /* Hide panes */
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
+
+        /* Search enhancements */
+        #btnClearSearch:hover {
+            color: #ef4444 !important; /* Red on hover */
+        }
+
+        #reportSearch:focus {
+            background: rgba(255,255,255,0.08) !important;
+            border-color: #0ea5e9 !important;
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+        }
+
+        #btnSearch {
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+            transition: all 0.2s;
+        }
+
+        #btnSearch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(14, 165, 233, 0.4);
+        }
+
+        #btnSearch:active {
+            transform: translateY(0);
+        }

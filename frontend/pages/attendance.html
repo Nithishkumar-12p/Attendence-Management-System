@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Attendance - Industrial Attendance</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/attendance.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar glass-panel">
+            <div style="text-align: center; padding: 0.5rem 1rem 1rem 1rem;">
+                <img src="../assets/logo.png" alt="Vidvat Solutions Logo" style="max-width: 100%; height: auto; max-height: 65px; object-fit: contain; border-radius: 12px; margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto;">
+                <h2 style="color: var(--text-main); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 0.02em; margin: 0;">VIDVAT SOLUTIONS</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item" onclick="location.href='dashboard.html'"><i class="fa-solid fa-gauge-high"></i> Dashboard</li>
+                <li class="nav-item active" onclick="location.href='attendance.html'"><i class="fa-solid fa-calendar-check"></i> Mark Attendance</li>
+                <li class="nav-item" onclick="location.href='employees.html'"><i class="fa-solid fa-users"></i> Contract Labours</li>
+                <li class="nav-item" onclick="location.href='salary.html'"><i class="fa-solid fa-wallet"></i> Salary</li>
+                <li class="nav-item" onclick="location.href='reports.html'"><i class="fa-solid fa-file-lines"></i> Reports</li>
+                <li class="nav-item" onclick="location.href='settings.html'"><i class="fa-solid fa-gear"></i> Settings</li>
+                <li class="nav-item" onclick="location.href='login.html'" style="margin-top: auto; color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> Logout</li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content attendance-main">
+            <!-- Sticky Header Area -->
+            <div class="attendance-sticky-header">
+                <header>
+                    <h1>Attendance Entry</h1>
+                    <p style="color: var(--text-dim);">Date: <span id="displayDate" style="color: var(--text-main); font-weight: bold;"></span></p>
+                </header>
+                <div class="search-container">
+                    <input type="text" id="employeeSearch" placeholder="Search by name or ID..." style="flex: 1; padding: 0.8rem;">
+                    <input type="date" id="datePicker" class="glass-panel" style="padding: 0.8rem;">
+                </div>
+            </div>
+
+            <div id="saveStatus" class="toast-save">✅ Saved Successfully</div>
+
+            <!-- Scrollable Table -->
+            <div class="attendance-table-wrapper">
+                <div class="glass-panel" style="padding: 0; overflow: hidden;">
+                    <div class="data-table-container table-responsive">
+                    <table id="attendanceTable">
+                        <thead>
+                            <tr>
+                                <th>Emp ID</th>
+                                <th>Name</th>
+                                <th>In Time</th>
+                                <th>Out Time</th>
+                                <th>No. of Tools</th>
+                                <th>Tools Details</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div><!-- /attendance-table-wrapper -->
+        </div><!-- /main-content -->
+    </div>
+
+    <script src="../js/attendance.js"></script>
+</body>
+</html>

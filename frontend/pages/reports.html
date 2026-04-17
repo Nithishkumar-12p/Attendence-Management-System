@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Vidvat Solutions</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/reports.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar glass-panel">
+            <div style="text-align: center; padding: 0.5rem 1rem 1rem 1rem;">
+                <img src="../assets/logo.png" alt="Vidvat Solutions Logo"
+                    style="max-width: 100%; height: auto; max-height: 65px; object-fit: contain; border-radius: 12px; margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto;">
+                <h2
+                    style="color: var(--text-main); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 0.02em; margin: 0;">
+                    VIDVAT SOLUTIONS</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item" onclick="location.href='dashboard.html'"><i class="fa-solid fa-gauge-high"></i>
+                    Dashboard</li>
+                <li class="nav-item" onclick="location.href='attendance.html'"><i
+                        class="fa-solid fa-calendar-check"></i> Mark Attendance</li>
+                <li class="nav-item" onclick="location.href='employees.html'"><i class="fa-solid fa-users"></i> Contract
+                    Labours</li>
+                <li class="nav-item" onclick="location.href='salary.html'"><i class="fa-solid fa-wallet"></i> Salary
+                </li>
+                <li class="nav-item active" onclick="location.href='reports.html'"><i
+                        class="fa-solid fa-file-lines"></i> Reports</li>
+                <li class="nav-item" onclick="location.href='settings.html'"><i class="fa-solid fa-gear"></i> Settings
+                </li>
+                <li class="nav-item" onclick="location.href='login.html'"
+                    style="margin-top: auto; color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i>
+                    Logout</li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Top bar -->
+            <div class="reports-topbar">
+                <div class="reports-title">Production Reports</div>
+                <div class="topbar-actions">
+                    <button id="btnExportPDF" class="btn btn-export-pdf" onclick="exportCurrentPDF()">
+                        📄 Export PDF
+                    </button>
+                </div>
+            </div>
+
+            <div class="search-section glass-panel" style="margin-bottom: 2rem; padding: 1.25rem; display: flex; align-items: center; gap: 1rem;">
+                <div style="position: relative; flex: 1; display: flex; align-items: center;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 1rem; color: var(--text-dim);"></i>
+                    <input type="text" id="reportSearch" placeholder="Search by name, ID, work type, or any other detail..." 
+                           style="width: 100%; padding: 0.85rem 3rem 0.85rem 2.8rem; border-radius: 12px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: var(--text-main); font-size: 1rem; outline: none; transition: all 0.2s;">
+                    <!-- Clear Button (X) -->
+                    <i id="btnClearSearch" class="fa-solid fa-circle-xmark" 
+                       style="position: absolute; right: 1rem; color: var(--text-dim); cursor: pointer; display: none; transition: color 0.2s;"></i>
+                </div>
+                <button id="btnSearch" class="btn btn-primary" style="padding: 0.85rem 2rem; border-radius: 12px; font-weight: 700; display: flex; align-items: center; gap: 0.75rem; white-space: nowrap;">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search
+                </button>
+            </div>
+
+            <!-- Tab Navigation Bar -->
+            <div class="tab-bar-container">
+                <div class="tab-group">
+                    <button class="tab-item active" id="tab-daily" onclick="switchTab('daily')">DAILY
+                        ATTENDANCE</button>
+                    <button class="tab-item" id="tab-range" onclick="switchTab('range')">DATE RANGE</button>
+                    <button class="tab-item" id="tab-workers" onclick="switchTab('workers')">WORKER DIRECTORY</button>
+                    <button class="tab-item" id="tab-payroll" onclick="switchTab('payroll')">PAYROLL</button>
+                </div>
+
+                <!-- Date filter (right-aligned, shown for daily/range tabs) -->
+                <div class="date-filter-row" id="dateFilterRow">
+                    <label>FROM:</label>
+                    <input type="date" id="filterFrom">
+                    <label>TO:</label>
+                    <input type="date" id="filterTo">
+                    <button class="btn btn-primary" style="padding: 0.4rem 1rem; font-size:0.85rem; border-radius: 6px;"
+                        onclick="applyDateFilter()">
+                        Load
+                    </button>
+                </div>
+            </div>
+
+            <!-- ── TAB: DAILY ATTENDANCE ── -->
+            <div class="tab-pane active" id="pane-daily">
+                <div class="stat-strip" id="dailyStats"></div>
+                <div class="glass-panel" style="padding: 0; overflow: hidden;">
+                    <div class="data-table-container table-responsive report-table-wrap">
+                        <table id="reportTable">
+                            <thead>
+                                <tr>
+                                    <th>EMP ID</th>
+                                    <th>NAME</th>
+                                    <th>STATUS</th>
+                                    <th>IN TIME</th>
+                                    <th>OUT TIME</th>
+                                    <th>LATE</th>
+                                    <th>TOOLS</th>
+                                    <th>DESCRIPTION / WORK TYPE</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dailyBody">
+                                <tr class="loading-row">
+                                    <td colspan="8">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── TAB: DATE RANGE ── -->
+            <div class="tab-pane" id="pane-range">
+                <div class="stat-strip" id="rangeStats"></div>
+                <div class="glass-panel" style="padding: 0; overflow: hidden;">
+                    <div class="data-table-container table-responsive report-table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>DATE</th>
+                                    <th>EMP ID</th>
+                                    <th>NAME</th>
+                                    <th>STATUS</th>
+                                    <th>IN TIME</th>
+                                    <th>OUT TIME</th>
+                                    <th>TOOLS</th>
+                                    <th>DESCRIPTION</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rangeBody">
+                                <tr class="loading-row">
+                                    <td colspan="8">Select a date range and click Apply.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── TAB: WORKER DIRECTORY ── -->
+            <div class="tab-pane" id="pane-workers">
+                <div class="stat-strip" id="workerStats"></div>
+                <div class="glass-panel" style="padding: 0; overflow: hidden;">
+                    <div class="data-table-container table-responsive report-table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>NAME</th>
+                                    <th>TYPE OF WORK</th>
+                                    <th>DAILY WAGE</th>
+                                    <th>PHONE</th>
+                                    <th>CONTRACT START</th>
+                                    <th>CONTRACT END</th>
+                                    <th>HRS/DAY</th>
+                                    <th>STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="workerBody">
+                                <tr class="loading-row">
+                                    <td colspan="9">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── TAB: PAYROLL ── -->
+            <div class="tab-pane" id="pane-payroll">
+                <div class="payroll-filter">
+                    <label style="color:var(--text-dim); font-weight:600;">Month:</label>
+                    <select id="payMonth">
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4" selected>April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                    <label style="color:var(--text-dim); font-weight:600;">Year:</label>
+                    <select id="payYear">
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026" selected>2026</option>
+                    </select>
+                    <button class="btn btn-primary" style="padding:0.55rem 1.2rem;"
+                        onclick="loadPayroll()">Load</button>
+                </div>
+                <div class="stat-strip" id="payrollStats"></div>
+                <div class="glass-panel" style="padding: 0; overflow: hidden;">
+                    <div class="data-table-container table-responsive report-table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>EMP ID</th>
+                                    <th>NAME</th>
+                                    <th>TYPE OF WORK</th>
+                                    <th>BASIC WAGE</th>
+                                    <th>PRESENT DAYS</th>
+                                    <th>ABSENT DAYS</th>
+                                    <th>FINAL SALARY</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payrollBody">
+                                <tr class="loading-row">
+                                    <td colspan="7">Click "Load" to view payroll data.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /main-content -->
+    </div>
+
+    <script src="../js/reports.js"></script>
+</body>
+
+</html>

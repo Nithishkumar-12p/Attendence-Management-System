@@ -1,0 +1,13 @@
+{
+  "name": "attendance-management-system",
+  "version": "1.0.0",
+  "description": "Industrial Attendance Management System",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev-backend": "python backend/app.py"
+  },
+  "dependencies": {
+    "electron": "^30.0.0"
+  }
+}

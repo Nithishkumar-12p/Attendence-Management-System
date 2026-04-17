@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Reports - Vidvat Solution</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/salary.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar glass-panel">
+            <div style="text-align: center; padding: 0.5rem 1rem 1rem 1rem;">
+                <img src="../assets/logo.png" alt="Vidvat Solutions Logo" style="max-width: 100%; height: auto; max-height: 65px; object-fit: contain; border-radius: 12px; margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto;">
+                <h2 style="color: var(--text-main); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 0.02em; margin: 0;">VIDVAT SOLUTIONS</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item" onclick="location.href='dashboard.html'"><i class="fa-solid fa-gauge-high"></i> Dashboard</li>
+                <li class="nav-item" onclick="location.href='attendance.html'"><i class="fa-solid fa-calendar-check"></i> Mark Attendance</li>
+                <li class="nav-item" onclick="location.href='employees.html'"><i class="fa-solid fa-users"></i> Contract Labours</li>
+                <li class="nav-item active" onclick="location.href='salary.html'"><i class="fa-solid fa-wallet"></i> Salary</li>
+                <li class="nav-item" onclick="location.href='reports.html'"><i class="fa-solid fa-file-lines"></i> Reports</li>
+                <li class="nav-item" onclick="location.href='settings.html'"><i class="fa-solid fa-gear"></i> Settings</li>
+                <li class="nav-item" onclick="location.href='login.html'" style="margin-top: auto; color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> Logout</li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="salary-summary">
+                <h1>Payroll Management</h1>
+                <div class="controls">
+                    <div class="search-box" style="margin-right: auto; flex: 1; max-width: 400px; display: flex; gap: 0.5rem; align-items: center;">
+                        <div style="position: relative; flex: 1; display: flex; align-items: center;">
+                            <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 0.8rem; color: var(--text-dim); font-size: 0.85rem;"></i>
+                            <input type="text" id="salarySearch" placeholder="Search by name or ID..." oninput="filterSalaries()"
+                                   style="width:100%; padding: 0.55rem 2.2rem 0.55rem 2.2rem; border-radius: 8px; font-size: 0.9rem;">
+                            <i id="clearSalarySearch" class="fa-solid fa-circle-xmark" onclick="clearSearch()"
+                               style="position: absolute; right: 0.8rem; color: var(--text-dim); cursor: pointer; display: none;"></i>
+                        </div>
+                    </div>
+                    <select id="reportMonth">
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4" selected>April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                    <select id="reportYear">
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026" selected>2026</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="generateSalaries()" id="genBtn">Generate / Refresh</button>
+                    <button class="btn btn-export-pdf" onclick="exportFullReport()" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fa-solid fa-file-pdf"></i> Export Full
+                    </button>
+                </div>
+            </header>
+
+            <div class="glass-panel" style="padding: 2rem;">
+                <h2 id="reportTitle">Payroll Report - April 2026</h2>
+                <div class="data-table-container table-responsive">
+                    <table id="salaryTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Basic</th>
+                                <th>Present</th>
+                                <th>Absent</th>
+                                <th>Final Salary</th>
+                            </tr>
+                        </thead>
+                        <tbody id="salaryBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                        <tfoot>
+                            <tr style="background: rgba(251, 191, 36, 0.05); font-weight: bold; border-top: 2px solid var(--primary);">
+                                <td colspan="5" style="text-align: right; padding: 1.5rem;">Grand Total Payout:</td>
+                                <td id="totalPayout" style="color: var(--success); font-size: 1.2rem; padding: 1.5rem;">-</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/salary.js"></script>
+</body>
+</html>
