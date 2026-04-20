@@ -158,7 +158,25 @@ option {
 .data-table-container {
     width: 100%;
     border-radius: 12px;
-    overflow: hidden;
+    overflow-y: auto;
+    max-height: calc(100vh - 280px); /* Adjust based on header height */
+    border: 1px solid var(--glass-border);
+    position: relative;
+}
+
+/* Custom Scrollbar */
+.data-table-container::-webkit-scrollbar {
+    width: 8px;
+}
+.data-table-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.02);
+}
+.data-table-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+.data-table-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.2);
 }
 
 table {
@@ -167,7 +185,10 @@ table {
 }
 
 th {
-    background: rgba(0, 0, 0, 0.02);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #ffffff; /* Must have a background to hide rows underneath */
     padding: 1.2rem;
     text-align: left;
     color: var(--text-dim);

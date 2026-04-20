@@ -34,6 +34,14 @@ def health_check():
     return jsonify({"status": "Backend is running", "database": "PostgreSQL"})
 
 if __name__ == '__main__':
+    # Run contract expiration cleanup once at startup
+    try:
+        from backend.models.employee import EmployeeModel
+        print("Running startup cleanup: deactivating expired contracts...")
+        EmployeeModel.auto_deactivate_expired_contracts()
+    except Exception as e:
+        print(f"Startup cleanup failed: {e}")
+
     # Run the app
     # In production, Electron will spawn this.
     port = int(os.environ.get("PORT", 5000))

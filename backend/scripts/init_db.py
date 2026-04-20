@@ -48,7 +48,13 @@ def initialize_database():
         )
         cursor = conn.cursor()
 
-        schema_path = os.path.join(os.path.dirname(__file__), 'schema.sql')
+        # FIXED PATH: schema.sql is in backend/database/
+        schema_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'database', 'schema.sql'))
+        print(f"Applying schema from: {schema_path}")
+        
+        if not os.path.exists(schema_path):
+            raise FileNotFoundError(f"Schema file not found at {schema_path}")
+
         with open(schema_path, 'r') as f:
             cursor.execute(f.read())
         
@@ -57,8 +63,13 @@ def initialize_database():
         cursor.close()
         conn.close()
 
+    except psycopg2.Error as pe:
+        print(f"PostgreSQL Error: {pe}")
+        print(f"Details: host={host}, port={port}, user={user}, dbname={dbname}")
     except Exception as e:
         print(f"Error initializing database: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
     initialize_database()

@@ -37,7 +37,7 @@
 
                 // Inject table rows
                 const tbody = document.querySelector('#recentLogTable tbody');
-                tbody.innerHTML = sortedLogs.slice(0, 10).map(a => `
+                tbody.innerHTML = sortedLogs.map(a => `
                     <tr>
                         <td>${a.name}</td>
                         <td>${a.remarks || a.designation || '-'}</td>

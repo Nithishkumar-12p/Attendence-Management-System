@@ -29,9 +29,6 @@ class EmployeeModel:
 
     @staticmethod
     def get_all_employees():
-        # Run auto-deactivation first to ensure accuracy
-        EmployeeModel.auto_deactivate_expired_contracts()
-        
         # Only return active workers
         query = "SELECT * FROM employees WHERE is_active = TRUE ORDER BY employee_id"
         return db.execute_query(query, fetch=True)

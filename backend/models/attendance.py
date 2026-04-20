@@ -47,19 +47,17 @@ class AttendanceModel:
             
             if isinstance(in_time, str):
                 try:
-                    # Clean input time (HH:MM:SS -> HH:MM)
-                    t_str = in_time.substring(0, 5) if len(in_time) > 5 else in_time
+                    # PYTHON FIX: Use slicing [:5] instead of .substring(0, 5)
+                    t_str = in_time[:5] if len(in_time) >= 5 else in_time
                     t = datetime.strptime(t_str, '%H:%M').time()
                     if t > grace_time:
                         is_late = True
-                except (ValueError, AttributeError):
-                    # Handle cases where substring might fail or format is different
-                    try:
-                        t = datetime.strptime(in_time[:5], '%H:%M').time()
-                        if t > grace_time:
-                            is_late = True
-                    except:
-                        pass
+                except (ValueError, AttributeError, TypeError) as e:
+                    print(f"Time parsing error for {in_time}: {e}")
+                    is_late = False
+            elif isinstance(in_time, time):
+                if in_time > grace_time:
+                    is_late = True
 
         query = """
             INSERT INTO attendance (employee_id, date, status, in_time, out_time, is_late, remarks, tools_count, tools_details)

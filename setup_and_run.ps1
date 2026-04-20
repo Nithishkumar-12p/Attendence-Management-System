@@ -16,8 +16,8 @@ try {
 
     # 1. Create venv if not exists
     if (-not (Test-Path "venv")) {
-        Write-Host "Creating Python Virtual Environment..." -ForegroundColor Yellow
-        python -m venv venv
+        Write-Host "Creating Python Virtual Environment (using Python 3.12)..." -ForegroundColor Yellow
+        py -3.12 -m venv venv
     }
 
     # 2. Verify Venv Health (Fixes "Fatal error in launcher" if folder was moved)
@@ -28,20 +28,29 @@ try {
     } catch {
         Write-Host "Virtual Environment path is broken. Repairing..." -ForegroundColor Red
         Remove-Item -Recurse -Force "venv"
-        python -m venv venv
+        py -3.12 -m venv venv
     }
 
     Write-Host "Installing Python Dependencies..." -ForegroundColor Yellow
-    & $pipPath install -r requirements.txt | Out-Null
+    & $pipPath install -r requirements.txt
 
-    Write-Host "`n[2/4] Configuring Frontend Environment..." -ForegroundColor Cyan
+    Write-Host "`n[2/4] Initializing Database..." -ForegroundColor Cyan
+    $pythonPath = $pipPath.Replace("pip.exe", "python.exe")
+    & $pythonPath scripts\init_db.py
+
+    Write-Host "`n[3/4] Configuring Frontend Environment..." -ForegroundColor Cyan
     Set-Location $FRONTEND_DIR
 
-    # 3. NPM Install
-    Write-Host "Installing Node Modules..." -ForegroundColor Yellow
-    npm install | Out-Null
+    # 3. NPM Install - Only run if node_modules is missing for speed
+    if (-not (Test-Path "node_modules")) {
+        Write-Host "Installing Node Modules (This may take a minute)..." -ForegroundColor Yellow
+        npm install
+    } else {
+        Write-Host "Node Modules already installed. Skipping..." -ForegroundColor Gray
+        # Optional: npm install --prefer-offline 
+    }
 
-    Write-Host "`n[3/4] Launching Application..." -ForegroundColor Green
+    Write-Host "`n[4/4] Launching Application..." -ForegroundColor Green
     Write-Host "Starting System..." -ForegroundColor Green
 
     # 4. Start the Application
