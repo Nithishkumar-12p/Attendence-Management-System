@@ -5,9 +5,26 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dev-backend": "python backend/app.py"
+    "dev-backend": "python backend/app.py",
+    "build": "electron-builder"
   },
   "dependencies": {
+  },
+  "devDependencies": {
+    "electron-builder": "^24.13.3",
     "electron": "^30.0.0"
+  },
+  "build": {
+    "appId": "com.attendance.management.system",
+    "productName": "Attendance Management System",
+    "win": {
+      "target": "portable"
+    },
+    "extraResources": [
+      {
+        "from": "../backend/dist/backend.exe",
+        "to": "backend.exe"
+      }
+    ]
   }
 }

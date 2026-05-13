@@ -50,15 +50,15 @@ try {
         # Optional: npm install --prefer-offline 
     }
 
-    Write-Host "`n[4/4] Launching Application..." -ForegroundColor Green
-    Write-Host "Starting System..." -ForegroundColor Green
-
+    Write-Host "`n[4/4] Application is now running!" -ForegroundColor Green
+    Write-Host "Please keep this window open while using the Attendance System." -ForegroundColor White
+    Write-Host "Press CTRL+C in this window to stop the servers." -ForegroundColor Gray
+    
     # 4. Start the Application
     npm start
 
 } finally {
     # ── 3. Always Return to Root ──
-    # This ensures even if the app stays in 'frontend', the next terminal command starts at root
-    Write-Host "`n[4/4] Returning to Root Directory." -ForegroundColor Gray
+    Write-Host "`nReturning to Root Directory." -ForegroundColor Gray
     Set-Location $ROOT_DIR
 }

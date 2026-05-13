@@ -73,13 +73,6 @@ class AttendanceModel:
         """
         params = (employee_id, date, status, in_time, out_time, is_late, remarks, tools_count, tools_details)
         res = db.execute_query(query, params)
-        
-        # Sync Daily Description (remarks) to Employee Designation (Type of Work)
-        # This keeps the master worker data updated with their latest role in reports
-        # We process 'None' as empty string for consistent clearing
-        sync_remarks = remarks if remarks is not None else ''
-        sync_query = "UPDATE employees SET designation = %s WHERE employee_id = %s"
-        db.execute_query(sync_query, (sync_remarks, employee_id))
             
         return res
 

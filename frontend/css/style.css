@@ -1,6 +1,7 @@
 :root {
     --bg-dark: #f8fafc;
     --bg-card: #ffffff;
+    --bg-secondary: #ffffff;
     --primary: #0ea5e9; /* Professional Blue */
     --primary-hover: #0284c7;
     --accent: #f59e0b; /* Amber */
@@ -56,7 +57,7 @@ body {
 .main-content {
     flex: 1;
     margin-left: 280px;
-    padding: 2.5rem;
+    padding: 3.5rem 2.5rem 2.5rem 2.5rem;
 }
 
 /* Navigation */
@@ -159,9 +160,11 @@ option {
     width: 100%;
     border-radius: 12px;
     overflow-y: auto;
-    max-height: calc(100vh - 280px); /* Adjust based on header height */
+    max-height: calc(100vh - 220px);
+    min-height: 550px;
     border: 1px solid var(--glass-border);
     position: relative;
+    background: #ffffff;
 }
 
 /* Custom Scrollbar */
@@ -184,6 +187,14 @@ table {
     border-collapse: collapse;
 }
 
+tbody tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+tbody tr:hover {
+    background-color: rgba(14, 165, 233, 0.05) !important;
+}
+
 th {
     position: sticky;
     top: 0;
@@ -196,7 +207,7 @@ th {
     text-transform: uppercase;
     font-size: 0.8rem;
     letter-spacing: 0.05em;
-    border-bottom: 2px solid var(--glass-border);
+    border-bottom: 2px solid var(--primary);
 }
 
 td {

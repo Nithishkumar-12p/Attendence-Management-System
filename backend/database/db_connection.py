@@ -54,6 +54,8 @@ class DatabaseConnection:
                 return data if fetch else True
         except Exception as e:
             print(f"Database Query Error: {e}")
+            print(f"Query: {query}")
+            print(f"Params: {params}")
             if conn:
                 conn.rollback()
             return None

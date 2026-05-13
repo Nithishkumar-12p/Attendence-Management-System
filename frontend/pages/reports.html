@@ -88,6 +88,35 @@
                         Load
                     </button>
                 </div>
+
+                <!-- Payroll filter (right-aligned, shown for payroll tab) -->
+                <div class="date-filter-row" id="payrollFilterRow" style="display: none;">
+                    <label>Month:</label>
+                    <select id="payMonth" style="padding: 0.4rem 0.6rem; font-size: 0.85rem; border-radius: 8px;">
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4" selected>April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                    <label>Year:</label>
+                    <select id="payYear" style="padding: 0.4rem 0.6rem; font-size: 0.85rem; border-radius: 8px;">
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026" selected>2026</option>
+                    </select>
+                    <button class="btn btn-primary" style="padding: 0.4rem 1rem; font-size:0.85rem; border-radius: 6px;"
+                        onclick="loadPayroll()">
+                        Load
+                    </button>
+                </div>
             </div>
 
             <!-- ── TAB: DAILY ATTENDANCE ── -->
@@ -175,33 +204,8 @@
                 </div>
             </div>
 
-            <!-- ── TAB: PAYROLL ── -->
             <div class="tab-pane" id="pane-payroll">
-                <div class="payroll-filter">
-                    <label style="color:var(--text-dim); font-weight:600;">Month:</label>
-                    <select id="payMonth">
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4" selected>April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </select>
-                    <label style="color:var(--text-dim); font-weight:600;">Year:</label>
-                    <select id="payYear">
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026" selected>2026</option>
-                    </select>
-                    <button class="btn btn-primary" style="padding:0.55rem 1.2rem;"
-                        onclick="loadPayroll()">Load</button>
-                </div>
+
                 <div class="stat-strip" id="payrollStats"></div>
                 <div class="glass-panel" style="padding: 0; overflow: hidden;">
                     <div class="data-table-container table-responsive report-table-wrap">

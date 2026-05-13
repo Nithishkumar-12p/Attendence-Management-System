@@ -14,7 +14,6 @@ function createWindow() {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    icon: path.join(__dirname, 'assets/icon.ico'),
     title: "Industrial Attendance Management System"
   });
 
@@ -27,16 +26,29 @@ function createWindow() {
 }
 
 function startPythonBackend() {
-  // Python is in ../backend/venv
-  const rootDir = path.join(__dirname, '..');
-  const pythonPath = process.platform === 'win32' 
-    ? path.join(rootDir, 'backend/venv/Scripts/python.exe') 
-    : path.join(rootDir, 'backend/venv/bin/python');
+  const isPackaged = app.isPackaged;
+  let pythonPath;
+  let args;
+  let options = {
+    cwd: path.join(__dirname, '..')
+  };
+
+  if (isPackaged) {
+    // In packaged app, the executable is in resources folder
+    pythonPath = path.join(process.resourcesPath, 'backend.exe');
+    args = [];
+    options.cwd = process.resourcesPath;
+  } else {
+    // In development mode
+    const rootDir = path.join(__dirname, '..');
+    pythonPath = process.platform === 'win32' 
+      ? path.join(rootDir, 'backend/venv/Scripts/python.exe') 
+      : path.join(rootDir, 'backend/venv/bin/python');
+    args = ['-m', 'backend.app'];
+  }
   
-  // Starting it from root directory so backend.app package logic works
-  pythonProcess = spawn(pythonPath, ['-m', 'backend.app'], {
-    cwd: rootDir
-  });
+  console.log(`Starting backend: ${pythonPath} with args ${args}`);
+  pythonProcess = spawn(pythonPath, args, options);
 
   pythonProcess.stdout.on('data', (data) => {
     console.log(`Python: ${data}`);

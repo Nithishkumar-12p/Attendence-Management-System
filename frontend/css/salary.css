@@ -61,10 +61,13 @@
             margin-top: 1rem;
         }
         th {
-            background: var(--bg-secondary);
+            background: #ffffff;
             padding: 1rem;
             text-align: left;
             border-bottom: 2px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
         td {
             padding: 1rem;

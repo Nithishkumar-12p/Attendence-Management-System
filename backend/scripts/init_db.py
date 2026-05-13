@@ -38,7 +38,7 @@ def initialize_database():
         cursor.close()
         conn.close()
 
-        # Now connect to the new database and run schema.sql
+        # Now connect to the new database and run schema.sql ONLY if tables don't exist
         conn = psycopg2.connect(
             dbname=dbname,
             user=user,
@@ -48,18 +48,29 @@ def initialize_database():
         )
         cursor = conn.cursor()
 
-        # FIXED PATH: schema.sql is in backend/database/
-        schema_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'database', 'schema.sql'))
-        print(f"Applying schema from: {schema_path}")
-        
-        if not os.path.exists(schema_path):
-            raise FileNotFoundError(f"Schema file not found at {schema_path}")
+        # Check if core tables already exist to avoid wiping data
+        cursor.execute("""
+            SELECT COUNT(*) FROM information_schema.tables 
+            WHERE table_schema = 'public' AND table_name = 'employees'
+        """)
+        tables_exist = cursor.fetchone()[0] > 0
 
-        with open(schema_path, 'r') as f:
-            cursor.execute(f.read())
+        if tables_exist:
+            print("Database tables already exist. Skipping schema to preserve data.")
+        else:
+            # FIXED PATH: schema.sql is in backend/database/
+            schema_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'database', 'schema.sql'))
+            print(f"Applying schema from: {schema_path}")
+            
+            if not os.path.exists(schema_path):
+                raise FileNotFoundError(f"Schema file not found at {schema_path}")
+
+            with open(schema_path, 'r') as f:
+                cursor.execute(f.read())
+            
+            conn.commit()
+            print("Schema applied successfully.")
         
-        conn.commit()
-        print("Schema applied successfully.")
         cursor.close()
         conn.close()
 

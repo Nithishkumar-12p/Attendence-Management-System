@@ -1,25 +1,39 @@
         let allLabours = [];
 
         async function fetchEmployees() {
-            const res = await fetch('http://localhost:5000/api/employees/');
-            allLabours = await res.json();
-            renderTable();
+            try {
+                console.log("Fetching employees...");
+                const res = await fetch('http://localhost:5000/api/employees/');
+                const data = await res.json();
+                console.log("Received data:", data);
+                allLabours = Array.isArray(data) ? data : (data.value || []);
+                renderTable();
+            } catch (err) {
+                console.error("Error fetching employees:", err);
+                document.getElementById('employeeListBody').innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--danger);">Failed to load data: ${err.message}</td></tr>`;
+            }
         }
 
         function renderTable(searchTerm = '') {
             const tbody = document.getElementById('employeeListBody');
+            if (!tbody) return;
             
             const filtered = allLabours.filter(lab => 
                 String(lab.name).toLowerCase().includes(searchTerm.toLowerCase()) || 
                 String(lab.employee_id).toLowerCase().includes(searchTerm.toLowerCase())
             );
 
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 2rem; color: var(--text-dim);">No workers found</td></tr>';
+                return;
+            }
+
             tbody.innerHTML = filtered.map(emp => `
                 <tr>
                     <td>${emp.employee_id}</td>
                     <td style="font-weight: 600;">${emp.name}</td>
                     <td style="color: var(--text-dim);">${emp.designation || '-'}</td>
-                    <td style="font-weight: 600; color: var(--primary);">₹${emp.basic_salary.toLocaleString()}</td>
+                    <td style="font-weight: 600; color: var(--primary);">₹${(emp.basic_salary || 0).toLocaleString()}</td>
                     <td>
                         <span class="badge ${emp.is_active ? 'badge-present' : 'badge-absent'}">
                             ${emp.is_active ? 'Active' : 'Inactive'}
@@ -27,13 +41,16 @@
                     </td>
                     <td style="text-align: right; padding-right: 2rem;">
                         <button class="btn" style="background: rgba(56, 189, 248, 0.1); color: var(--accent); padding: 0.3rem 0.6rem; margin-right: 0.5rem;" 
-                                onclick='showEditModal(${JSON.stringify(emp)})'>Edit</button>
+                                onclick='showEditModal(${JSON.stringify(emp).replace(/'/g, "&apos;")})'>Edit</button>
                         <button class="btn" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); padding: 0.3rem 0.6rem;" 
                                 onclick="deleteEmployee('${emp.employee_id}')">End Contract</button>
                     </td>
                 </tr>
             `).join('');
         }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', fetchEmployees);
 
         document.getElementById('labourSearch').addEventListener('input', (e) => {
             renderTable(e.target.value);
@@ -92,17 +109,23 @@
             const url = isEditing ? `http://localhost:5000/api/employees/update/${currentEditId}` : 'http://localhost:5000/api/employees/add';
             const method = isEditing ? 'PUT' : 'POST';
 
-            const res = await fetch(url, {
-                method: method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await res.json();
-            if (result.success) {
-                hideAddModal();
-                fetchEmployees();
-            } else {
-                alert("Operation failed. Please try again.");
+            try {
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await res.json();
+                console.log('API Response:', result);
+                if (result.success) {
+                    hideAddModal();
+                    fetchEmployees();
+                } else {
+                    alert("Operation failed: " + JSON.stringify(result));
+                }
+            } catch (err) {
+                console.error('Fetch error:', err);
+                alert("Network error: " + err.message);
             }
         });
 

@@ -20,9 +20,9 @@ def get_employees():
                 "contract_start_date": str(e[7]) if e[7] else None,
                 "contract_end_date": str(e[8]) if e[8] else None,
                 "working_hours_per_day": float(e[9]) if e[9] else 8.0,
-                "is_active": e[10],
-                "created_at": str(e[11]) if e[11] else None,
-                "shift_id": e[12] if len(e) > 12 else None
+                "shift_id": e[10] if len(e) > 10 else None,
+                "is_active": e[11],
+                "created_at": str(e[12]) if e[12] else None
             })
     return jsonify(formatted)
 

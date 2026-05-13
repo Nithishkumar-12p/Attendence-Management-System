@@ -14,8 +14,12 @@
             document.getElementById('pane-' + tab).classList.add('active');
 
             // Show date filter only for relevant tabs
-            const showFilter = ['daily', 'range'].includes(tab);
-            document.getElementById('dateFilterRow').style.display = showFilter ? 'flex' : 'none';
+            const showDateFilter = ['daily', 'range'].includes(tab);
+            document.getElementById('dateFilterRow').style.display = showDateFilter ? 'flex' : 'none';
+
+            // Show payroll filter only for payroll tab
+            const showPayrollFilter = (tab === 'payroll');
+            document.getElementById('payrollFilterRow').style.display = showPayrollFilter ? 'flex' : 'none';
 
             // Refresh data automatically on tab switch
             if (tab === 'daily') loadDaily();
@@ -36,12 +40,9 @@
             document.getElementById('dailyBody').innerHTML = '<tr class="loading-row"><td colspan="8">Loading...</td></tr>';
             try {
                 const res = await fetch(`http://localhost:5000/api/attendance/list/${date}`);
-                const data = await res.json();
+                let data = await res.json();
+                data = Array.isArray(data) ? data : (data.value || []);
                 cachedData.daily = data;
-
-                const present = data.filter(r => r.status === 'P').length;
-                const absent  = data.filter(r => r.status === 'A').length;
-                const late    = data.filter(r => r.is_late).length;
 
                 if (!data.length) {
                     document.getElementById('dailyBody').innerHTML = `<tr class="loading-row"><td colspan="8">No attendance records found for ${date}.</td></tr>`;
@@ -61,7 +62,8 @@
                 `).join('');
                 applySearchFilter();
             } catch(e) {
-                document.getElementById('dailyBody').innerHTML = `<tr class="loading-row"><td colspan="8">Error loading data. Is the server running?</td></tr>`;
+                console.error("Error loading daily report:", e);
+                document.getElementById('dailyBody').innerHTML = `<tr class="loading-row"><td colspan="8">Error loading data. ${e.message}</td></tr>`;
             }
         }
 
@@ -72,7 +74,8 @@
             document.getElementById('rangeBody').innerHTML = '<tr class="loading-row"><td colspan="8">Loading...</td></tr>';
             try {
                 const res = await fetch(`http://localhost:5000/api/attendance/range?start_date=${s}&end_date=${e}`);
-                const data = await res.json();
+                let data = await res.json();
+                data = Array.isArray(data) ? data : (data.value || []);
                 cachedData.range = data;
 
                 if (!data.length) {
@@ -92,8 +95,9 @@
                     </tr>
                 `).join('');
                 applySearchFilter();
-            } catch(e) {
-                document.getElementById('rangeBody').innerHTML = `<tr class="loading-row"><td colspan="8">Error loading data. Make sure start_date &le; end_date.</td></tr>`;
+            } catch(err) {
+                console.error("Error loading range report:", err);
+                document.getElementById('rangeBody').innerHTML = `<tr class="loading-row"><td colspan="8">Error loading data. ${err.message}</td></tr>`;
             }
         }
 
@@ -101,7 +105,8 @@
         async function loadWorkers() {
             try {
                 const res = await fetch('http://localhost:5000/api/employees/');
-                const data = await res.json();
+                let data = await res.json();
+                data = Array.isArray(data) ? data : (data.value || []);
                 cachedData.workers = data;
 
                 document.getElementById('workerBody').innerHTML = data.map(r => `
@@ -119,6 +124,7 @@
                 `).join('');
                 applySearchFilter();
             } catch(e) {
+                console.error("Error loading worker directory:", e);
                 document.getElementById('workerBody').innerHTML = `<tr class="loading-row"><td colspan="9">Error loading worker data.</td></tr>`;
             }
         }
@@ -130,12 +136,9 @@
             document.getElementById('payrollBody').innerHTML = '<tr class="loading-row"><td colspan="8">Loading...</td></tr>';
             try {
                 const res = await fetch(`http://localhost:5000/api/salary/report/${m}/${y}`);
-                const data = await res.json();
+                let data = await res.json();
+                data = Array.isArray(data) ? data : (data.value || []);
                 cachedData.payroll = data;
-
-                const totalPay = data.reduce((acc, r) => acc + (r.final_salary||0), 0);
-                const totalDed = data.reduce((acc, r) => acc + (r.deductions||0), 0);
-                const monthName = document.getElementById('payMonth').options[document.getElementById('payMonth').selectedIndex].text;
 
                 if (!data.length) {
                     document.getElementById('payrollBody').innerHTML = `<tr class="loading-row"><td colspan="8">No salary data. Go to <a href="salary.html" style="color:var(--primary)">Salary page</a> to generate.</td></tr>`;
@@ -154,6 +157,7 @@
                 `).join('');
                 applySearchFilter();
             } catch(e) {
+                console.error("Error loading payroll:", e);
                 document.getElementById('payrollBody').innerHTML = `<tr class="loading-row"><td colspan="8">Error loading payroll data.</td></tr>`;
             }
         }

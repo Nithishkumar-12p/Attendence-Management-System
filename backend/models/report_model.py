@@ -44,9 +44,118 @@ class ReportModel(FPDF):
         pdf.set_text_color(30, 41, 59)
         pdf.cell(0, 10, f'Daily Attendance Report: {date_str}', new_x="LMARGIN", new_y="NEXT")
         pdf.ln(5)
-        # ... (rest of method same)
 
-    # ... keeping other static methods ...
+        # Table Header
+        pdf.set_font('helvetica', 'B', 10)
+        pdf.set_fill_color(30, 83, 107)
+        pdf.set_text_color(255, 255, 255)
+        
+        headers = ['ID', 'Name', 'In', 'Out', 'Status', 'Work Type']
+        widths = [15, 45, 25, 25, 20, 60]
+        
+        for i, h in enumerate(headers):
+            pdf.cell(widths[i], 10, h, fill=True, align='C')
+        pdf.ln()
+
+        # Rows
+        pdf.set_font('helvetica', '', 9)
+        pdf.set_text_color(30, 41, 59)
+        
+        for r in records:
+            # r: (id, name, designation, status, in, out, is_late, remarks, tools_count, tools_details)
+            pdf.cell(widths[0], 8, str(r[0]), border=1, align='C')
+            pdf.cell(widths[1], 8, str(r[1]), border=1)
+            pdf.cell(widths[2], 8, str(r[4] or '-'), border=1, align='C')
+            pdf.cell(widths[3], 8, str(r[5] or '-'), border=1, align='C')
+            pdf.cell(widths[4], 8, str(r[3] or 'A'), border=1, align='C')
+            pdf.cell(widths[5], 8, str(r[7] or r[2] or '-'), border=1)
+            pdf.ln()
+
+        output_path = os.path.join(os.path.dirname(__file__), '..', '..', f'daily_attendance_{date_str}.pdf')
+        pdf.output(output_path)
+        return output_path
+
+    @staticmethod
+    def generate_range_pdf(start_date, end_date):
+        records = AttendanceModel.get_attendance_for_range(start_date, end_date)
+        pdf = ReportModel._create_pdf_instance()
+        pdf.add_page()
+        
+        pdf.set_font('helvetica', 'B', 14)
+        pdf.set_text_color(30, 41, 59)
+        pdf.cell(0, 10, f'Attendance Report: {start_date} to {end_date}', new_x="LMARGIN", new_y="NEXT")
+        pdf.ln(5)
+
+        # Table Header
+        pdf.set_font('helvetica', 'B', 9)
+        pdf.set_fill_color(30, 83, 107)
+        pdf.set_text_color(255, 255, 255)
+        
+        headers = ['Date', 'ID', 'Name', 'Status', 'In', 'Out', 'Remarks']
+        widths = [25, 12, 40, 15, 20, 20, 58]
+        
+        for i, h in enumerate(headers):
+            pdf.cell(widths[i], 10, h, fill=True, align='C')
+        pdf.ln()
+
+        # Rows
+        pdf.set_font('helvetica', '', 8)
+        pdf.set_text_color(30, 41, 59)
+        
+        for r in records:
+            # r: (date, id, name, designation, status, in, out, remarks, tools_count, tools_details)
+            pdf.cell(widths[0], 7, str(r[0]), border=1)
+            pdf.cell(widths[1], 7, str(r[1]), border=1, align='C')
+            pdf.cell(widths[2], 7, str(r[2]), border=1)
+            pdf.cell(widths[3], 7, str(r[4] or 'A'), border=1, align='C')
+            pdf.cell(widths[4], 7, str(r[5] or '-'), border=1, align='C')
+            pdf.cell(widths[5], 7, str(r[6] or '-'), border=1, align='C')
+            pdf.cell(widths[6], 7, str(r[7] or '-'), border=1)
+            pdf.ln()
+
+        output_path = os.path.join(os.path.dirname(__file__), '..', '..', f'attendance_range_{start_date}_{end_date}.pdf')
+        pdf.output(output_path)
+        return output_path
+
+    @staticmethod
+    def generate_employee_list_pdf():
+        from backend.models.employee import EmployeeModel
+        employees = EmployeeModel.get_all_employees()
+        pdf = ReportModel._create_pdf_instance()
+        pdf.add_page()
+        
+        pdf.set_font('helvetica', 'B', 14)
+        pdf.set_text_color(30, 41, 59)
+        pdf.cell(0, 10, 'Worker Directory', new_x="LMARGIN", new_y="NEXT")
+        pdf.ln(5)
+
+        # Table Header
+        pdf.set_font('helvetica', 'B', 10)
+        pdf.set_fill_color(30, 83, 107)
+        pdf.set_text_color(255, 255, 255)
+        
+        headers = ['ID', 'Name', 'Designation', 'Aadhar', 'Phone']
+        widths = [15, 50, 40, 40, 45]
+        
+        for i, h in enumerate(headers):
+            pdf.cell(widths[i], 10, h, fill=True, align='C')
+        pdf.ln()
+
+        # Rows
+        pdf.set_font('helvetica', '', 9)
+        pdf.set_text_color(30, 41, 59)
+        
+        for e in employees:
+            pdf.cell(widths[0], 8, str(e[0]), border=1, align='C')
+            pdf.cell(widths[1], 8, str(e[1]), border=1)
+            pdf.cell(widths[2], 8, str(e[3] or '-'), border=1)
+            pdf.cell(widths[3], 8, str(e[5] or '-'), border=1)
+            pdf.cell(widths[4], 8, str(e[6] or '-'), border=1)
+            pdf.ln()
+
+        output_path = os.path.join(os.path.dirname(__file__), '..', '..', 'worker_directory.pdf')
+        pdf.output(output_path)
+        return output_path
 
     @staticmethod
     def _draw_invoice_slip(pdf, r, month_name, year):

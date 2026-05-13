@@ -99,19 +99,21 @@
         /* Table styling */
         .report-table-wrap {
             border-radius: 8px;
-            overflow: hidden;
+            overflow-y: auto;
+            max-height: calc(100vh - 220px);
+            min-height: 500px;
             border: 1px solid var(--glass-border);
             background: var(--bg-card);
         }
 
         #reportTable th,
         .report-table-wrap table th {
-            background: rgba(0,0,0,0.02);
+            background: #ffffff;
             color: var(--text-main);
             font-size: 0.75rem;
             font-weight: 700;
             padding: 1rem;
-            border-bottom: 1px solid var(--glass-border);
+            border-bottom: 2px solid var(--primary);
         }
 
         #reportTable td,

@@ -29,6 +29,20 @@ app.register_blueprint(report_bp, url_prefix='/api/reports')
 app.register_blueprint(settings_bp, url_prefix='/api/settings')
 app.register_blueprint(shift_bp, url_prefix='/api/shifts')
 
+@app.route('/', methods=['GET'])
+def index():
+    return jsonify({
+        "message": "Attendance Management System API is running",
+        "endpoints": {
+            "health": "/api/health",
+            "employees": "/api/employees",
+            "attendance": "/api/attendance",
+            "salary": "/api/salary",
+            "reports": "/api/reports",
+            "shifts": "/api/shifts"
+        }
+    })
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({"status": "Backend is running", "database": "PostgreSQL"})
