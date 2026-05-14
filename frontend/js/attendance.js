@@ -27,6 +27,8 @@
         async function fetchEmployees() {
             const res = await fetch('http://localhost:5000/api/employees/');
             allEmployees = await res.json();
+            // Sort by Employee ID
+            allEmployees.sort((a, b) => a.employee_id - b.employee_id);
         }
 
         async function fetchExistingAttendance(date) {
@@ -47,6 +49,10 @@
                 String(emp.name).toLowerCase().includes(filterText.toLowerCase()) || 
                 String(emp.employee_id).toLowerCase().includes(filterText.toLowerCase())
             );
+
+            // Update record count UI
+            const countEl = document.getElementById('recordCount');
+            if (countEl) countEl.innerText = `${filtered.length} Workers Found`;
 
             filtered.forEach(emp => {
                 const shift = allShifts.find(s => s.id === emp.shift_id) || { start_time: '09:00:00', end_time: '18:00:00', name: 'General' };

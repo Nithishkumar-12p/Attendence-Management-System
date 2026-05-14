@@ -12,11 +12,11 @@
 
         .reports-title {
             font-size: 2rem;
-            font-weight: 500;
-            color: #0ea5e9; /* Light blue matching screenshot */
+            font-weight: 700;
+            color: var(--text-main);
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 1rem;
         }
 
         .topbar-actions {
@@ -35,7 +35,7 @@
             border: 1px solid var(--glass-border);
             border-radius: 8px;
             padding: 0.5rem 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
             flex-wrap: wrap;
             gap: 1rem;
         }
@@ -142,8 +142,13 @@
         .stat-strip {
             display: flex;
             gap: 1rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.75rem; /* Reduced margin */
             flex-wrap: wrap;
+        }
+
+        .stat-strip:empty {
+            display: none;
+            margin: 0;
         }
 
         .stat-chip {
@@ -192,9 +197,25 @@
         /* Loading */
         .loading-row td { text-align: center; color: var(--text-dim); padding: 3rem !important; }
 
-        /* Hide panes */
-        .tab-pane { display: none; }
-        .tab-pane.active { display: block; }
+        /* Show panes with flex for scrolling */
+        .tab-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tab-pane { 
+            display: none; 
+            flex: 1;
+            flex-direction: column;
+            justify-content: flex-start; /* Ensure content starts at the top */
+            overflow: hidden;
+        }
+
+        .tab-pane.active { 
+            display: flex; 
+        }
 
         /* Search enhancements */
         #btnClearSearch:hover {

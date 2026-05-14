@@ -20,37 +20,25 @@ def seed_random_data():
     ]
     designations = ["Helper", "Supervisor", "Technician", "Operator", "Manager", "Security"]
     
-    # 1. Insert Employees
-    employee_ids = []
-    print(f"Seeding {len(names)} employees...")
+    today = datetime.now()
     
-    for i, name in enumerate(names):
-        salary = random.randint(15000, 45000)
-        designation = random.choice(designations)
-        aadhar = str(random.randint(100000000000, 999999999999))
-        phone = str(random.randint(7000000000, 9999999999))
-        joining_date = (datetime.now() - timedelta(days=random.randint(30, 365))).strftime('%Y-%m-%d')
-        
-        query = """
-            INSERT INTO employees (name, basic_salary, designation, joining_date, aadhar_number, phone_number)
-            VALUES (%s, %s, %s, %s, %s, %s)
-            RETURNING employee_id
-        """
-        params = (name, salary, designation, joining_date, aadhar, phone)
-        result = db.execute_query(query, params, fetch=True)
-        if result:
-            employee_ids.append(result[0][0])
-
-    print(f"Successfully seeded {len(employee_ids)} employees.")
+    # 1. Fetch all existing active employees
+    print("Fetching active employees...")
+    query = "SELECT employee_id FROM employees WHERE is_active = TRUE"
+    records = db.execute_query(query, fetch=True)
+    employee_ids = [r[0] for r in records]
+    
+    print(f"Generating data for {len(employee_ids)} active employees.")
 
     # 2. Insert Attendance for the last 7 days
     print("Seeding attendance for the last 7 days...")
-    today = datetime.now()
     status_options = ['P', 'P', 'P', 'P', 'A', 'HD', 'P', 'P'] # Weightage towards Present
 
     records_count = 0
+    # Seed from 6 days ago up to today (inclusive)
     for day_offset in range(7):
-        date = (today - timedelta(days=day_offset)).strftime('%Y-%m-%d')
+        date_obj = today - timedelta(days=day_offset)
+        date = date_obj.strftime('%Y-%m-%d')
         
         for emp_id in employee_ids:
             status = random.choice(status_options)
@@ -81,6 +69,17 @@ def seed_random_data():
                 records_count += 1
 
     print(f"Successfully seeded {records_count} attendance records.")
+    
+    # 3. Seed Salaries for the current month
+    print(f"Seeding salaries for {today.month}/{today.year}...")
+    from backend.models.salary import SalaryModel
+    salary_count = 0
+    for emp_id in employee_ids:
+        res = SalaryModel.calculate_monthly_salary(emp_id, today.month, today.year)
+        if res:
+            salary_count += 1
+    print(f"Successfully seeded {salary_count} salary records.")
+
     print("Seeding complete!")
 
 if __name__ == "__main__":

@@ -41,200 +41,216 @@
         </div>
 
         <!-- Main Content -->
-        <div class="main-content">
-
-            <!-- Top bar -->
-            <div class="reports-topbar">
-                <div class="reports-title">Production Reports</div>
-                <div class="topbar-actions">
-                    <button id="btnExportPDF" class="btn btn-export-pdf" onclick="exportCurrentPDF()">
-                        📄 Export PDF
-                    </button>
-                </div>
-            </div>
-
-            <div class="search-section glass-panel" style="margin-bottom: 2rem; padding: 1.25rem; display: flex; align-items: center; gap: 1rem;">
-                <div style="position: relative; flex: 1; display: flex; align-items: center;">
-                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 1rem; color: var(--text-dim);"></i>
-                    <input type="text" id="reportSearch" placeholder="Search by name, ID, work type, or any other detail..." 
-                           style="width: 100%; padding: 0.85rem 3rem 0.85rem 2.8rem; border-radius: 12px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: var(--text-main); font-size: 1rem; outline: none; transition: all 0.2s;">
-                    <!-- Clear Button (X) -->
-                    <i id="btnClearSearch" class="fa-solid fa-circle-xmark" 
-                       style="position: absolute; right: 1rem; color: var(--text-dim); cursor: pointer; display: none; transition: color 0.2s;"></i>
-                </div>
-                <button id="btnSearch" class="btn btn-primary" style="padding: 0.85rem 2rem; border-radius: 12px; font-weight: 700; display: flex; align-items: center; gap: 0.75rem; white-space: nowrap;">
-                    <i class="fa-solid fa-magnifying-glass"></i> Search
-                </button>
-            </div>
-
-            <!-- Tab Navigation Bar -->
-            <div class="tab-bar-container">
-                <div class="tab-group">
-                    <button class="tab-item active" id="tab-daily" onclick="switchTab('daily')">DAILY
-                        ATTENDANCE</button>
-                    <button class="tab-item" id="tab-range" onclick="switchTab('range')">DATE RANGE</button>
-                    <button class="tab-item" id="tab-workers" onclick="switchTab('workers')">WORKER DIRECTORY</button>
-                    <button class="tab-item" id="tab-payroll" onclick="switchTab('payroll')">PAYROLL</button>
+        <div class="main-content reports-main">
+            <div class="sticky-header-section" style="flex-shrink: 0; background: var(--bg-dark); z-index: 110;">
+                <!-- Top bar -->
+                <div class="reports-topbar">
+                    <div class="reports-title" style="display: flex; align-items: center; gap: 1.5rem;">
+                        Production Reports
+                        <div id="recordCount"
+                            style="background: rgba(14, 165, 233, 0.1); color: var(--primary); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700; font-size: 0.85rem;">
+                            Loading records...
+                        </div>
+                    </div>
+                    <div class="topbar-actions" style="display: flex; gap: 1rem; align-items: center;">
+                        <button id="btnExportPDF" class="btn btn-export-pdf" onclick="exportCurrentPDF()">
+                            📄 Export PDF
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Date filter (right-aligned, shown for daily/range tabs) -->
-                <div class="date-filter-row" id="dateFilterRow">
-                    <label>FROM:</label>
-                    <input type="date" id="filterFrom">
-                    <label>TO:</label>
-                    <input type="date" id="filterTo">
-                    <button class="btn btn-primary" style="padding: 0.4rem 1rem; font-size:0.85rem; border-radius: 6px;"
-                        onclick="applyDateFilter()">
-                        Load
+                <div class="search-section glass-panel"
+                    style="margin-bottom: 1rem; padding: 1.25rem; display: flex; align-items: center; gap: 1rem; margin-left: 2.5rem; margin-right: 2.5rem;">
+                    <div style="position: relative; flex: 1; display: flex; align-items: center;">
+                        <i class="fa-solid fa-magnifying-glass"
+                            style="position: absolute; left: 1rem; color: var(--text-dim);"></i>
+                        <input type="text" id="reportSearch"
+                            placeholder="Search by name, ID, work type, or any other detail..."
+                            style="width: 100%; padding: 0.85rem 3rem 0.85rem 2.8rem; border-radius: 12px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: var(--text-main); font-size: 1rem; outline: none; transition: all 0.2s;">
+                        <!-- Clear Button (X) -->
+                        <i id="btnClearSearch" class="fa-solid fa-circle-xmark"
+                            style="position: absolute; right: 1rem; color: var(--text-dim); cursor: pointer; display: none; transition: color 0.2s;"></i>
+                    </div>
+                    <button id="btnSearch" class="btn btn-primary"
+                        style="padding: 0.85rem 2rem; border-radius: 12px; font-weight: 700; display: flex; align-items: center; gap: 0.75rem; white-space: nowrap;">
+                        <i class="fa-solid fa-magnifying-glass"></i> Search
                     </button>
                 </div>
 
-                <!-- Payroll filter (right-aligned, shown for payroll tab) -->
-                <div class="date-filter-row" id="payrollFilterRow" style="display: none;">
-                    <label>Month:</label>
-                    <select id="payMonth" style="padding: 0.4rem 0.6rem; font-size: 0.85rem; border-radius: 8px;">
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4" selected>April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </select>
-                    <label>Year:</label>
-                    <select id="payYear" style="padding: 0.4rem 0.6rem; font-size: 0.85rem; border-radius: 8px;">
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026" selected>2026</option>
-                    </select>
-                    <button class="btn btn-primary" style="padding: 0.4rem 1rem; font-size:0.85rem; border-radius: 6px;"
-                        onclick="loadPayroll()">
-                        Load
-                    </button>
-                </div>
-            </div>
+                <!-- Tab Navigation Bar -->
+                <div class="tab-bar-container">
+                    <div class="tab-group">
+                        <button class="tab-item active" id="tab-daily" onclick="switchTab('daily')">DAILY
+                            ATTENDANCE</button>
+                        <button class="tab-item" id="tab-range" onclick="switchTab('range')">DATE RANGE</button>
+                        <button class="tab-item" id="tab-workers" onclick="switchTab('workers')">WORKER DIRECTORY</button>
+                        <button class="tab-item" id="tab-payroll" onclick="switchTab('payroll')">PAYROLL</button>
+                    </div>
 
-            <!-- ── TAB: DAILY ATTENDANCE ── -->
-            <div class="tab-pane active" id="pane-daily">
-                <div class="stat-strip" id="dailyStats"></div>
-                <div class="glass-panel" style="padding: 0; overflow: hidden;">
-                    <div class="data-table-container table-responsive report-table-wrap">
-                        <table id="reportTable">
-                            <thead>
-                                <tr>
-                                    <th>EMP ID</th>
-                                    <th>NAME</th>
-                                    <th>STATUS</th>
-                                    <th>IN TIME</th>
-                                    <th>OUT TIME</th>
-                                    <th>LATE</th>
-                                    <th>TOOLS</th>
-                                    <th>DESCRIPTION / WORK TYPE</th>
-                                </tr>
-                            </thead>
-                            <tbody id="dailyBody">
-                                <tr class="loading-row">
-                                    <td colspan="8">Loading...</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <!-- Date filter (right-aligned, shown for daily/range tabs) -->
+                    <div class="date-filter-row" id="dateFilterRow">
+                        <label>FROM:</label>
+                        <input type="date" id="filterFrom">
+                        <label>TO:</label>
+                        <input type="date" id="filterTo">
+                        <button class="btn btn-primary"
+                            style="padding: 0.4rem 1rem; font-size:0.85rem; border-radius: 6px;"
+                            onclick="applyDateFilter()">
+                            Load
+                        </button>
+                    </div>
+
+                    <!-- Payroll Filter (Month/Year selection) -->
+                    <div class="date-filter-row" id="payrollFilterRow" style="display: none;">
+                        <select id="payMonth" style="padding: 0.4rem;">
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5" selected>May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                        <select id="payYear" style="padding: 0.4rem;">
+                            <option value="2026">2026</option>
+                            <option value="2025">2025</option>
+                        </select>
+                        <button class="btn btn-primary"
+                            style="padding: 0.4rem 1rem; font-size:0.85rem; border-radius: 6px;" onclick="loadPayroll()">
+                            View
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- ── TAB: DATE RANGE ── -->
-            <div class="tab-pane" id="pane-range">
-                <div class="stat-strip" id="rangeStats"></div>
-                <div class="glass-panel" style="padding: 0; overflow: hidden;">
-                    <div class="data-table-container table-responsive report-table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>DATE</th>
-                                    <th>EMP ID</th>
-                                    <th>NAME</th>
-                                    <th>STATUS</th>
-                                    <th>IN TIME</th>
-                                    <th>OUT TIME</th>
-                                    <th>TOOLS</th>
-                                    <th>DESCRIPTION</th>
-                                </tr>
-                            </thead>
-                            <tbody id="rangeBody">
-                                <tr class="loading-row">
-                                    <td colspan="8">Select a date range and click Apply.</td>
-                                </tr>
-                            </tbody>
-                        </table>
+            <div class="page-container">
+                <div class="tab-content">
+                    <!-- ── TAB: DAILY ATTENDANCE ── -->
+                    <div class="tab-pane active" id="pane-daily">
+                        <div class="stat-strip" id="dailyStats"></div>
+                        <div class="data-table-container">
+                            <table id="reportTable">
+                                <thead>
+                                    <tr>
+                                        <th>EMP ID</th>
+                                        <th>NAME</th>
+                                        <th>STATUS</th>
+                                        <th>IN TIME</th>
+                                        <th>OUT TIME</th>
+                                        <th>LATE</th>
+                                        <th>TOOLS</th>
+                                        <th>DESCRIPTION / WORK TYPE</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dailyBody">
+                                    <tr class="loading-row">
+                                        <td colspan="8">Loading...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- ── TAB: WORKER DIRECTORY ── -->
-            <div class="tab-pane" id="pane-workers">
-                <div class="stat-strip" id="workerStats"></div>
-                <div class="glass-panel" style="padding: 0; overflow: hidden;">
-                    <div class="data-table-container table-responsive report-table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>NAME</th>
-                                    <th>TYPE OF WORK</th>
-                                    <th>DAILY WAGE</th>
-                                    <th>PHONE</th>
-                                    <th>CONTRACT START</th>
-                                    <th>CONTRACT END</th>
-                                    <th>HRS/DAY</th>
-                                    <th>STATUS</th>
-                                </tr>
-                            </thead>
-                            <tbody id="workerBody">
-                                <tr class="loading-row">
-                                    <td colspan="9">Loading...</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <!-- ── TAB: DATE RANGE ── -->
+                    <div class="tab-pane" id="pane-range">
+                        <div class="stat-strip" id="rangeStats"></div>
+                        <div class="data-table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>DATE</th>
+                                        <th>EMP ID</th>
+                                        <th>NAME</th>
+                                        <th>STATUS</th>
+                                        <th>IN TIME</th>
+                                        <th>OUT TIME</th>
+                                        <th>TOOLS</th>
+                                        <th>DESCRIPTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rangeBody">
+                                    <tr class="loading-row">
+                                        <td colspan="8">Select a date range and click Apply.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="tab-pane" id="pane-payroll">
-
-                <div class="stat-strip" id="payrollStats"></div>
-                <div class="glass-panel" style="padding: 0; overflow: hidden;">
-                    <div class="data-table-container table-responsive report-table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>EMP ID</th>
-                                    <th>NAME</th>
-                                    <th>TYPE OF WORK</th>
-                                    <th>BASIC WAGE</th>
-                                    <th>PRESENT DAYS</th>
-                                    <th>ABSENT DAYS</th>
-                                    <th>FINAL SALARY</th>
-                                </tr>
-                            </thead>
-                            <tbody id="payrollBody">
-                                <tr class="loading-row">
-                                    <td colspan="7">Click "Load" to view payroll data.</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <!-- ── TAB: WORKER DIRECTORY ── -->
+                    <div class="tab-pane" id="pane-workers">
+                        <div class="stat-strip" id="workerStats"></div>
+                        <div class="data-table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>NAME</th>
+                                        <th>TYPE OF WORK</th>
+                                        <th>DAILY WAGE</th>
+                                        <th>PHONE</th>
+                                        <th>CONTRACT START</th>
+                                        <th>CONTRACT END</th>
+                                        <th>HRS/DAY</th>
+                                        <th>STATUS</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="workerBody">
+                                    <tr class="loading-row">
+                                        <td colspan="9">Loading...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            </div>
 
+                    <!-- ── TAB: PAYROLL ── -->
+                    <div class="tab-pane" id="pane-payroll">
+                        <div class="stat-strip" id="payrollStats"></div>
+                        <div class="data-table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>EMP ID</th>
+                                        <th>NAME</th>
+                                        <th>TYPE OF WORK</th>
+                                        <th>BASIC WAGE</th>
+                                        <th>PRESENT DAYS</th>
+                                        <th>ABSENT DAYS</th>
+                                        <th>FINAL SALARY</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="payrollBody">
+                                    <tr class="loading-row">
+                                        <td colspan="7">Click "Load" to view payroll data.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div><!-- /tab-content -->
+            </div><!-- /page-container -->
         </div><!-- /main-content -->
     </div>
 
     <script src="../js/reports.js"></script>
+    <script>
+        // Auto refresh every 10 seconds
+        setInterval(() => {
+            // Re-trigger the logic based on current active tab if variables are available
+            if (typeof activeTab !== 'undefined') {
+                if (activeTab === 'daily') applyDateFilter();
+                else if (activeTab === 'range') applyDateFilter();
+                else if (activeTab === 'workers') { if (typeof fetchWorkers === 'function') fetchWorkers(); }
+                else if (activeTab === 'payroll') loadPayroll();
+            }
+        }, 10000);
+    </script>
 </body>
 
 </html>

@@ -45,6 +45,9 @@
                 if (!res.ok) throw new Error("Failed to fetch salary report");
                 const data = await res.json();
                 
+                // Sort by Employee ID
+                data.sort((a, b) => a.employee_id - b.employee_id);
+                
                 const tbody = document.getElementById('salaryBody');
                 tbody.innerHTML = '';
                 

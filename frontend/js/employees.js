@@ -23,6 +23,10 @@
                 String(lab.employee_id).toLowerCase().includes(searchTerm.toLowerCase())
             );
 
+            // Update record count UI
+            const countEl = document.getElementById('recordCount');
+            if (countEl) countEl.innerText = `${filtered.length} Workers Found`;
+
             if (filtered.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 2rem; color: var(--text-dim);">No workers found</td></tr>';
                 return;

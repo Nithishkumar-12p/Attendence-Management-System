@@ -3,7 +3,9 @@ import psycopg2
 from psycopg2 import pool
 from dotenv import load_dotenv
 
-load_dotenv()
+# Load .env from the backend directory
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', '.env')
+load_dotenv(dotenv_path)
 
 class DatabaseConnection:
     _instance = None

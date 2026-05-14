@@ -29,6 +29,13 @@ app.register_blueprint(report_bp, url_prefix='/api/reports')
 app.register_blueprint(settings_bp, url_prefix='/api/settings')
 app.register_blueprint(shift_bp, url_prefix='/api/shifts')
 
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
+
 @app.route('/', methods=['GET'])
 def index():
     return jsonify({
@@ -46,6 +53,12 @@ def index():
 @app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({"status": "Backend is running", "database": "PostgreSQL"})
+
+@app.route('/api/test_db', methods=['GET'])
+def test_db():
+    from backend.database.db_connection import db
+    res = db.execute_query("SELECT COUNT(*) FROM employees WHERE is_active = TRUE", fetch=True)
+    return jsonify({"count": res[0][0] if res else -1})
 
 if __name__ == '__main__':
     # Run contract expiration cleanup once at startup

@@ -26,6 +26,9 @@
             if (tab === 'range') loadRange();
             if (tab === 'workers') loadWorkers();
             if (tab === 'payroll') loadPayroll();
+            
+            // Re-apply filter to update record count
+            applySearchFilter();
         }
 
         // ─── Apply Date Filter ─────────────────────────────────────────────
@@ -42,6 +45,10 @@
                 const res = await fetch(`http://localhost:5000/api/attendance/list/${date}`);
                 let data = await res.json();
                 data = Array.isArray(data) ? data : (data.value || []);
+                
+                // Sort by Employee ID
+                data.sort((a, b) => a.employee_id - b.employee_id);
+                
                 cachedData.daily = data;
 
                 if (!data.length) {
@@ -107,6 +114,10 @@
                 const res = await fetch('http://localhost:5000/api/employees/');
                 let data = await res.json();
                 data = Array.isArray(data) ? data : (data.value || []);
+                
+                // Sort by Employee ID
+                data.sort((a, b) => a.employee_id - b.employee_id);
+                
                 cachedData.workers = data;
 
                 document.getElementById('workerBody').innerHTML = data.map(r => `
@@ -138,6 +149,10 @@
                 const res = await fetch(`http://localhost:5000/api/salary/report/${m}/${y}`);
                 let data = await res.json();
                 data = Array.isArray(data) ? data : (data.value || []);
+                
+                // Sort by Employee ID
+                data.sort((a, b) => a.employee_id - b.employee_id);
+                
                 cachedData.payroll = data;
 
                 if (!data.length) {
@@ -207,6 +222,12 @@
                 row.style.display = isMatch ? '' : 'none';
                 if (isMatch) visibleCount++;
             });
+
+            const countEl = document.getElementById('recordCount');
+            if (countEl) {
+                countEl.innerText = `${visibleCount} Records Found`;
+                countEl.style.display = 'block';
+            }
         }
 
         // ─── Event Listeners ──────────────────────────────────────────────
