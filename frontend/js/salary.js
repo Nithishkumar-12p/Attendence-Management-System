@@ -8,13 +8,13 @@
 
             try {
                 // First get all employee IDs
-                const empRes = await fetch('http://localhost:5000/api/employees/');
+                const empRes = await fetch('http://127.0.0.1:5000/api/employees/');
                 if (!empRes.ok) throw new Error("Failed to fetch employees");
                 const emps = await empRes.json();
                 const ids = emps.map(e => e.employee_id);
 
                 // Run calculation
-                const calcRes = await fetch('http://localhost:5000/api/salary/calculate', {
+                const calcRes = await fetch('http://127.0.0.1:5000/api/salary/calculate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ employee_ids: ids, month, year })
@@ -41,7 +41,7 @@
             document.getElementById('reportTitle').innerText = `Payroll Report - ${monthName} ${year}`;
             
             try {
-                const res = await fetch(`http://localhost:5000/api/salary/report/${month}/${year}`);
+                const res = await fetch(`http://127.0.0.1:5000/api/salary/report/${month}/${year}`);
                 if (!res.ok) throw new Error("Failed to fetch salary report");
                 const data = await res.json();
                 
@@ -129,7 +129,7 @@
                              .map(tr => tr.cells[0].innerText.trim())
                              .filter(id => id && id !== "");
 
-            let url = `http://localhost:5000/api/reports/pdf/salary/${m}/${y}`;
+            let url = `http://127.0.0.1:5000/api/reports/pdf/salary/${m}/${y}`;
             if (ids.length > 0) {
                 url += `?ids=${ids.join(',')}`;
             }
@@ -141,7 +141,7 @@
             // Optional: keeping it just for internal logic if needed, but UI is removed
             const m = document.getElementById('reportMonth').value;
             const y = document.getElementById('reportYear').value;
-            window.location.href = `http://localhost:5000/api/reports/pdf/salary/slip/${emp_id}/${m}/${y}`;
+            window.location.href = `http://127.0.0.1:5000/api/reports/pdf/salary/slip/${emp_id}/${m}/${y}`;
         }
 
         // Initial load

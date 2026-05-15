@@ -3,7 +3,7 @@
         async function fetchEmployees() {
             try {
                 console.log("Fetching employees...");
-                const res = await fetch('http://localhost:5000/api/employees/');
+                const res = await fetch('http://127.0.0.1:5000/api/employees/');
                 const data = await res.json();
                 console.log("Received data:", data);
                 allLabours = Array.isArray(data) ? data : (data.value || []);
@@ -62,7 +62,7 @@
 
         async function deleteEmployee(empId) {
             if (confirm(`Are you sure you want to remove ${empId}?`)) {
-                await fetch(`http://localhost:5000/api/employees/delete/${empId}`, { method: 'DELETE' });
+                await fetch(`http://127.0.0.1:5000/api/employees/delete/${empId}`, { method: 'DELETE' });
                 fetchEmployees();
             }
         }
@@ -110,7 +110,7 @@
                 working_hours_per_day: parseFloat(document.getElementById('empHours').value)
             };
 
-            const url = isEditing ? `http://localhost:5000/api/employees/update/${currentEditId}` : 'http://localhost:5000/api/employees/add';
+            const url = isEditing ? `http://127.0.0.1:5000/api/employees/update/${currentEditId}` : 'http://127.0.0.1:5000/api/employees/add';
             const method = isEditing ? 'PUT' : 'POST';
 
             try {

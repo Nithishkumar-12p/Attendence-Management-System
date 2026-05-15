@@ -42,7 +42,7 @@
             const date = document.getElementById('filterFrom').value;
             document.getElementById('dailyBody').innerHTML = '<tr class="loading-row"><td colspan="8">Loading...</td></tr>';
             try {
-                const res = await fetch(`http://localhost:5000/api/attendance/list/${date}`);
+                const res = await fetch(`http://127.0.0.1:5000/api/attendance/list/${date}`);
                 let data = await res.json();
                 data = Array.isArray(data) ? data : (data.value || []);
                 
@@ -80,7 +80,7 @@
             const e = document.getElementById('filterTo').value;
             document.getElementById('rangeBody').innerHTML = '<tr class="loading-row"><td colspan="8">Loading...</td></tr>';
             try {
-                const res = await fetch(`http://localhost:5000/api/attendance/range?start_date=${s}&end_date=${e}`);
+                const res = await fetch(`http://127.0.0.1:5000/api/attendance/range?start_date=${s}&end_date=${e}`);
                 let data = await res.json();
                 data = Array.isArray(data) ? data : (data.value || []);
                 cachedData.range = data;
@@ -111,7 +111,7 @@
         // ─── WORKERS ──────────────────────────────────────────────────────
         async function loadWorkers() {
             try {
-                const res = await fetch('http://localhost:5000/api/employees/');
+                const res = await fetch('http://127.0.0.1:5000/api/employees/');
                 let data = await res.json();
                 data = Array.isArray(data) ? data : (data.value || []);
                 
@@ -146,7 +146,7 @@
             const y = document.getElementById('payYear').value;
             document.getElementById('payrollBody').innerHTML = '<tr class="loading-row"><td colspan="8">Loading...</td></tr>';
             try {
-                const res = await fetch(`http://localhost:5000/api/salary/report/${m}/${y}`);
+                const res = await fetch(`http://127.0.0.1:5000/api/salary/report/${m}/${y}`);
                 let data = await res.json();
                 data = Array.isArray(data) ? data : (data.value || []);
                 
@@ -184,10 +184,10 @@
             const m    = document.getElementById('payMonth').value;
             const y    = document.getElementById('payYear').value;
 
-            if (currentTab === 'daily')   window.location.href = `http://localhost:5000/api/reports/pdf/daily/${from}`;
-            if (currentTab === 'range')   window.location.href = `http://localhost:5000/api/reports/pdf/range?start_date=${from}&end_date=${to}`;
-            if (currentTab === 'workers') window.location.href = `http://localhost:5000/api/reports/pdf/employees`;
-            if (currentTab === 'payroll') window.location.href = `http://localhost:5000/api/reports/pdf/salary/${m}/${y}`;
+            if (currentTab === 'daily')   window.location.href = `http://127.0.0.1:5000/api/reports/pdf/daily/${from}`;
+            if (currentTab === 'range')   window.location.href = `http://127.0.0.1:5000/api/reports/pdf/range?start_date=${from}&end_date=${to}`;
+            if (currentTab === 'workers') window.location.href = `http://127.0.0.1:5000/api/reports/pdf/employees`;
+            if (currentTab === 'payroll') window.location.href = `http://127.0.0.1:5000/api/reports/pdf/salary/${m}/${y}`;
         }
 
 

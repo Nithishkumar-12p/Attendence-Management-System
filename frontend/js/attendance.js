@@ -17,7 +17,7 @@
 
         async function fetchShifts() {
             try {
-                const res = await fetch('http://localhost:5000/api/shifts/');
+                const res = await fetch('http://127.0.0.1:5000/api/shifts/');
                 allShifts = await res.json();
             } catch (err) {
                 console.error('Error fetching shifts:', err);
@@ -25,14 +25,14 @@
         }
 
         async function fetchEmployees() {
-            const res = await fetch('http://localhost:5000/api/employees/');
+            const res = await fetch('http://127.0.0.1:5000/api/employees/');
             allEmployees = await res.json();
             // Sort by Employee ID
             allEmployees.sort((a, b) => a.employee_id - b.employee_id);
         }
 
         async function fetchExistingAttendance(date) {
-            const res = await fetch(`http://localhost:5000/api/attendance/list/${date}`);
+            const res = await fetch(`http://127.0.0.1:5000/api/attendance/list/${date}`);
             const data = await res.json();
             // Map into dictionary for easy access
             attendanceData = {};
@@ -161,7 +161,7 @@
             }));
 
             try {
-                const res = await fetch('http://localhost:5000/api/attendance/mark', {
+                const res = await fetch('http://127.0.0.1:5000/api/attendance/mark', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)

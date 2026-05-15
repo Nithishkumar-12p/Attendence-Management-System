@@ -1,5 +1,5 @@
-const SHIFT_API = 'http://localhost:5000/api/shifts';
-const EMP_API = 'http://localhost:5000/api/employees';
+const SHIFT_API = 'http://127.0.0.1:5000/api/shifts';
+const EMP_API = 'http://127.0.0.1:5000/api/employees';
 
 let allShifts = [];
 let allEmployees = [];
@@ -16,8 +16,15 @@ async function init() {
 
 async function fetchGlobalSettings() {
     try {
-        const res = await fetch('http://localhost:5000/api/settings/');
-        const settings = await res.json();
+        const res = await fetch('http://127.0.0.1:5000/api/settings/');
+        const settingsList = await res.json();
+        
+        // Convert list to object for easier access
+        const settings = {};
+        settingsList.forEach(s => {
+            settings[s.key] = s.value;
+        });
+
         const companyName = settings.company_name || 'INDUSTRIAL ATTENDANCE';
         updateSidebarBanner(companyName);
     } catch (err) {
