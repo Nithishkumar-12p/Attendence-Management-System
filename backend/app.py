@@ -14,6 +14,7 @@ from backend.routes.salary_routes import salary_bp
 from backend.routes.report_routes import report_bp
 from backend.routes.settings_routes import settings_bp
 from backend.routes.shift_routes import shift_bp
+from backend.routes.auth_routes import auth_bp
 
 load_dotenv()
 
@@ -28,6 +29,7 @@ app.register_blueprint(salary_bp, url_prefix='/api/salary')
 app.register_blueprint(report_bp, url_prefix='/api/reports')
 app.register_blueprint(settings_bp, url_prefix='/api/settings')
 app.register_blueprint(shift_bp, url_prefix='/api/shifts')
+app.register_blueprint(auth_bp, url_prefix='/api/auth')
 
 @app.after_request
 def after_request(response):
