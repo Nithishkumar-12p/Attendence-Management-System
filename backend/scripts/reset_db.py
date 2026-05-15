@@ -21,7 +21,8 @@ def reset_db():
         )
         cur = conn.cursor()
 
-        with open(os.path.join(os.path.dirname(__file__), 'schema.sql'), 'r') as f:
+        schema_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'database', 'schema.sql'))
+        with open(schema_path, 'r') as f:
             schema_content = f.read()
 
         cur.execute(schema_content)
