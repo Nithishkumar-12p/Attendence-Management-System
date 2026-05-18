@@ -1,11 +1,46 @@
 import os
+import sys
 import psycopg2
 from psycopg2 import pool
 from dotenv import load_dotenv
 
-# Load .env from the backend directory
-dotenv_path = os.path.join(os.path.dirname(__file__), '..', '.env')
-load_dotenv(dotenv_path)
+# Try loading .env from multiple fallback directories to support both development and packaged environments
+dotenv_paths = []
+
+# 1. If running as a bundled executable, look next to the executable
+if getattr(sys, 'frozen', False):
+    exe_dir = os.path.dirname(sys.executable)
+    # Next to backend.exe (usually in resources/ in packaged Electron app)
+    dotenv_paths.append(os.path.join(exe_dir, '.env'))
+    # In the resources directory (fallback)
+    dotenv_paths.append(os.path.join(exe_dir, '..', '.env'))
+    # Next to the main application executable (two levels up from backend.exe)
+    dotenv_paths.append(os.path.join(exe_dir, '..', '..', '.env'))
+
+# 2. Development paths
+# Next to db_connection.py's parent (backend/.env)
+dotenv_paths.append(os.path.join(os.path.dirname(__file__), '..', '.env'))
+# Root folder (.env)
+dotenv_paths.append(os.path.join(os.path.dirname(__file__), '..', '..', '.env'))
+# Current working directory
+dotenv_paths.append(os.path.join(os.getcwd(), '.env'))
+dotenv_paths.append(os.path.join(os.getcwd(), 'backend', '.env'))
+
+# Load the first .env that exists
+loaded = False
+for path_to_try in dotenv_paths:
+    normalized_path = os.path.abspath(path_to_try)
+    if os.path.exists(normalized_path):
+        load_dotenv(normalized_path)
+        print(f"PostgreSQL Connection: Loaded .env from {normalized_path}")
+        loaded = True
+        break
+
+if not loaded:
+    # Fallback to default load_dotenv() which searches the current working directory
+    load_dotenv()
+    print("PostgreSQL Connection: No specific .env file found. Loading from default env variables.")
+
 
 class DatabaseConnection:
     _instance = None
